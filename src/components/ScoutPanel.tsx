@@ -8,16 +8,16 @@ interface ScoutPanelProps {
   isOpen: boolean;
   onClose: () => void;
   profile?: TrustProfile;
-  missions: ScoutMission[];
-  onMissionClaimed: (missionId: string) => void;
+  missions?: ScoutMission[];
+  onMissionClaimed?: (missionId: string) => void;
 }
 
 export default function ScoutPanel({
   isOpen,
   onClose,
   profile,
-  missions,
-  onMissionClaimed,
+  missions = [],
+  onMissionClaimed = () => {},
 }: ScoutPanelProps) {
   const [isStationary, setIsStationary] = useState(true);
   const [stationarySeconds, setStationarySeconds] = useState(8);
