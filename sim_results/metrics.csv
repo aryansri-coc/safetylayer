@@ -1,0 +1,13 @@
+metric,n,mean,stdDev,ci95Lower,ci95Upper,median,min,max
+Overall Precision,30,70.797,9.7808,67.1452,74.4488,69.835,50.79,89.03
+Overall Recall,30,94.9427,3.0758,93.7943,96.0911,95.17,87.08,100
+Overall F1 Score,30,80.7703,6.8593,78.2093,83.3313,80.54,64.82,92
+Cold Start AUC (Day 0),30,0.4634,0.2712,0.3622,0.5647,0.4143,0,1
+Accumulated AUC (Day 14),30,0.8355,0.2096,0.7573,0.9138,0.9018,0.125,1
+Routing Extra Travel Time (min),30,2.9683,0.5167,2.7754,3.1613,2.95,1.9,4
+Routing Risk Exposure Reduction (%),30,36.6267,26.1177,26.8752,46.3781,29.075,1,96
+Attacker Recall [malicious_single],30,100,0,100,100,100,100,100
+Attacker Recall [gps_spoofer],30,100,0,100,100,100,100,100
+Attacker Recall [colluding_cluster],30,97.5007,4.4575,95.8364,99.1649,100,83.33,100
+Attacker Recall [ai_fake_media],30,98.0333,4.7037,96.2771,99.7895,100,78.79,100
+Attacker Recall [sleeper],30,97.1707,4.0399,95.6623,98.679,100,86.67,100

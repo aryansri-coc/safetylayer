@@ -381,3 +381,263 @@ Thanks to:
 - Safetipin and the researchers and activists working on women's safety in public spaces, whose work inspired this project
 
 *SafeLayer provides information based on community reports and public data. It is not an emergency service and does not guarantee safety. In an emergency, contact your local emergency number.*
+
+---
+
+## 🏛️ System Architecture
+
+```mermaid
+graph TD
+    subgraph Client ["Client Layer (Next.js PWA)"]
+        UI["Safety Map & Routing UI"]
+        Contrib["Tiered Contributor (Tap / Voice / Video)"]
+        Preproc["Edge Preprocessor (3-5 Keyframe Sampler)"]
+        Scout["Scout Mode (Stationary Detection)"]
+    end
+
+    subgraph API ["Next.js API Routes"]
+        Router["/api/routes (Safety Re-ranking)"]
+        ReportHandler["/api/reports (Ingest & Trust Filter)"]
+        BaselineHandler["/api/baseline (Street View Prior)"]
+        ScoutHandler["/api/scout (Verification & Bounties)"]
+    end
+
+    subgraph ModuleA ["Module A: Gemma 4 Multimodal Extraction"]
+        GemmaInt["GemmaClient Interface"]
+        Providers["Hosted (AI Studio) | Ollama | Mock"]
+        ZodVal["Zod Schema Validator (< 0.65 to Queue)"]
+    end
+
+    subgraph ModuleB ["Module B: Street View & Places Prior"]
+        SV["Street View Frame Sampler"]
+        Places["Places & OSM Guardian Density"]
+        Honesty["Honesty Rules: Weak Prior (w=0.25)"]
+    end
+
+    subgraph ModuleC ["Module C: Trust & Verification Layer"]
+        Presence["GPS Trail & Plausible Speed Verification"]
+        BetaRep["Beta(α, β) Bayesian Reporter Reputation"]
+        Sybil["Cross-Modal & Collusion Defense"]
+    end
+
+    subgraph ModuleD ["Module D: Time-Aware Risk Model"]
+        Decay["Hazard Half-Life Decay Curves"]
+        Diurnal["Hour-of-Day Risk Curves (Day vs Night)"]
+    end
+
+    subgraph ModuleE ["Module E: Safety-Aware Routing Engine"]
+        Directions["Google Directions / OSRM Geometry"]
+        ReRank["Segment Risk Accumulator & Mode Weights"]
+        Tradeoff["Honest Trade-off Presentation (+3 min, -78% issues)"]
+    end
+
+    %% Wiring
+    Contrib --> Preproc --> ReportHandler
+    ReportHandler --> ModuleC --> ModuleA --> ZodVal
+    SV & Places --> Honesty --> BaselineHandler
+    BaselineHandler --> ModuleD
+    ModuleD --> ReRank
+    Directions --> ReRank --> Tradeoff --> Router --> UI
+```
+
+---
+
+## 🚀 Key Features & Modules
+
+1. **Tiered Contribution (Video is Optional)**:
+   - **Tier 0**: Post-trip 1-tap reason chips (< 1 KB).
+   - **Tier 1**: Chip + voice note in Hindi, English, or Hinglish (< 50 KB).
+   - **Tier 2**: Chip + 3-5 sampled keyframes with on-device face/license plate blurring (~250 KB).
+   - **Strict Physical Taxonomy Only**: `lighting`, `road_condition`, `footpath_missing`, `isolated_stretch`, `obstruction`. **NEVER** labels neighbourhoods, communities, caste, or people.
+
+2. **Module A (Gemma 4 Multimodal Extraction)**:
+   - Swappable provider interface (`HostedGemmaProvider`, `OllamaGemmaProvider`, `MockGemmaProvider`).
+   - Configurable thinking mode reasoning traces for hazard disambiguation.
+   - Strict Zod JSON validation; confidence $< 0.65$ sent to verification queue.
+
+3. **Module B (Street View Cold-Start Baseline)**:
+   - Solves the cold-start problem on unvisited roads.
+   - **Honesty Rules**: Daylight Street View can only prove lamp poles *exist*, not that bulbs function at night. Tagged: *"Lamps present, working status unknown"*, treated as weak prior ($w_{prior} = 0.25$).
+   - Imagery date is always recorded and shown; daytime imagery never results in a "lit at night" badge.
+
+4. **Module C (Trust & Verification Layer)**:
+   - **Presence Check**: Validates GPS transit trail at plausible speeds ($1.0 \le v \le 70\text{ km/h}$). Enables tap-only reports to be verified without video!
+   - **Reporter Reliability**: Modeled as $\text{Beta}(\alpha, \beta)$, updating on corroboration.
+   - **Collusion Guard**: Flags bursts of accounts reporting the same spot.
+
+5. **Module D (Time-Aware Risk Model)**:
+   - Diurnal risk curves: Streetlight outage penalty is $0\%$ at noon, $100\%$ at midnight.
+   - Hazard half-life decay: Potholes (21 days), missing footpaths (60 days), construction debris (12 hours).
+
+6. **Module E (Safety-Aware Routing Engine)**:
+   - Re-ranks alternative routes by risk along polylines at travel time.
+   - Mode preferences: *Walking*, *Two-Wheeler*, *Night Commute*, *Driving*.
+   - Ethical UX: **Never claims "safe"**; displays: *"Fewer reported issues (+3 min, 78% reduction)"*.
+
+7. **Scout Mode (Night Rider Layer)**:
+   - Aimed at cyclists and two-wheeler commuters.
+   - Stationary sensor safety lock: Prompts only when parked ($v < 1\text{ km/h}$ for $\ge 3\text{s}$).
+   - 500m home/start/end blackout privacy zones.
+
+8. **Civic Action Loop**:
+   - 1-click auto-drafted official municipal grievance notice (NDMC / BBMP) aggregating corroborated reports.
+
+---
+
+## 🛠️ Quickstart & Local Setup
+
+### Prerequisites
+- Node.js 18+ (tested on v22)
+- npm 10+
+
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/your-username/safelayer.git
+cd safelayer
+
+# Install dependencies
+npm install
+
+# Copy environment template
+cp .env.example .env.local
+```
+
+### Environment Configuration (`.env.local`)
+SafeLayer runs **out of the box with zero external credentials** using MapLibre GL, local SQLite/JSON storage, and the deterministic Mock Gemma 4 provider:
+
+```env
+# Google Maps API Key (Optional: Falls back to MapLibre GL + OpenStreetMap if not provided)
+NEXT_PUBLIC_GOOGLE_MAPS_KEY=
+
+# Gemma 4 Provider: "mock" (offline default), "hosted" (Google AI Studio), or "ollama" (local)
+GEMMA_PROVIDER=mock
+GEMMA_MODEL_ID=gemma-4-12b-it
+GEMMA_API_KEY=
+
+# Local demo settings
+DATABASE_MODE=sqlite
+NEXT_PUBLIC_MAP_DEFAULT_LAT=28.6315
+NEXT_PUBLIC_MAP_DEFAULT_LNG=77.2205
+```
+
+### Run Locally
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 🧪 Testing & Evaluation
+
+### Run Unit Tests
+```bash
+npm test
+```
+Tests cover:
+- Gemma 4 strict JSON schema validation & ethical taxonomy constraints.
+- Module C GPS trail presence check, Beta-distribution reputation updating, and spoof rejection.
+- Module E route re-ranking and tradeoff calculations.
+
+### Run Empirical Benchmarks
+```bash
+npx ts-node scripts/evaluate.ts
+```
+Or view the live benchmark visualizer at [http://localhost:3000/eval](http://localhost:3000/eval).
+
+---
+
+## ⏱️ 3-Minute Hackathon Demo Flow
+
+1. **Step 1: Baseline Shading**: Open the map on the Central Delhi corridor. Note the Street View baseline priors on unvisited segments with the honest *"Lamps present, working status unknown"* badge.
+2. **Step 2: Live Multimodal Report**: Click **"Report Hazard"**. Choose **Tier 1 (Voice)** or **Tier 2 (Keyframes)**. Type or speak a Hinglish claim (*"Batti nahi jal rahi hai, bohot andhera hai"*). Watch Gemma 4 extract structured JSON in real time.
+3. **Step 3: Fake Report Rejection**: Check the **"Demonstrate Trust Layer (Spoof Reject Test)"** box. Submit a report from 40 km away. Watch Module C reject the spoofed submission.
+4. **Step 4: Safety-Aware Routing**: Compare the direct 14-min route (passing the dark service road) with the 17-min commercial corridor. Notice the **"+3 min, 78% fewer reported issues"** trade-off. Move the **Travel Time Profile slider** to 12:00 PM to see daylight reduce lighting caution.
+5. **Step 5: Civic Action & Privacy**: Click **"Civic Notice"** to inspect the auto-drafted NDMC complaint letter. Click **"Privacy"** to review the zero-raw-video-retention guarantees.
+
+---
+
+## 📂 Repository Structure
+
+```
+├── docs/
+│   └── limitations_and_related_work.md   # Safetipin comparison & epistemic limits
+├── extension/                            # Optional Chrome Extension overlay
+│   ├── manifest.json
+│   ├── popup.html
+│   └── content.js
+├── scripts/
+│   ├── eval_dataset.json                 # Labelled multimodal & adversarial samples
+│   └── evaluate.ts                       # Benchmark runner
+├── src/
+│   ├── app/
+│   │   ├── api/                          # Endpoints: /reports, /routes, /baseline, /scout
+│   │   ├── eval/page.tsx                 # Empirical evaluation dashboard
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx                      # Main SafeLayer interactive map application
+│   ├── components/
+│   │   ├── CivicComplaintModal.tsx       # Auto-drafted NDMC/BBMP grievance generator
+│   │   ├── DemoWalkthrough.tsx           # 3-minute scripted demo walkthrough stepper
+│   │   ├── Navbar.tsx
+│   │   ├── PrivacyModal.tsx              # Ethical AI & privacy guarantees
+│   │   ├── ReportModal.tsx               # Tiered multimodal hazard reporting
+│   │   ├── RouteDrawer.tsx               # Route comparison, mode selector & time slider
+│   │   ├── SafeLayerMap.tsx              # Dual-engine Google Maps / MapLibre component
+│   │   └── ScoutPanel.tsx                # Rider gamification with stationary safety sensor
+│   ├── lib/
+│   │   ├── baseline/streetview.ts        # Module B: Street View & Places cold start prior
+│   │   ├── gemma/client.ts               # Module A: Swappable Gemma 4 multimodal client
+│   │   ├── gemma/schema.ts               # Zod validation schema
+│   │   ├── risk/model.ts                 # Module D: Diurnal risk curves & half-life decay
+│   │   ├── routing/engine.ts             # Module E: Safety-aware re-ranking engine
+│   │   ├── storage/repository.ts         # Unified spatial storage with geohash indexing
+│   │   ├── storage/seed.ts               # Realistic test corridor seed data
+│   │   └── trust/engine.ts               # Module C: Presence check & Bayesian reputation
+│   └── types/index.ts                    # Core TypeScript domain models
+---
+
+## 🧪 Simulation Harness & Empirical Verification
+
+SafeLayer includes an independent, reproducible **Monte Carlo simulation harness** located in `/sim` that stress-tests production modules (`TrustEngine`, `RiskModel`, `RoutingEngine`, `ScoutScoringEngine`) across 30 seeds against a hidden ground truth.
+
+### Reproduction Commands:
+```bash
+# 1. Run 30-seed Monte Carlo simulation (writes to /sim_results/results.json and metrics.csv)
+npm run sim -- --seeds 30 --config sim/configs/default.json
+
+# 2. Run full unit test suite (18 tests: trust, privacy fuzzing, scout anti-volume, determinism)
+npm test
+
+# 3. View interactive simulation dashboard in browser
+# Navigate to http://localhost:3000/sim
+```
+
+### Audited Headline Numbers (30 Seeds, 95% Confidence Intervals):
+- **Adversarial Precision:** `70.80%` [67.15%, 74.45%]
+- **Adversarial Recall:** `94.94%` [93.79%, 96.09%]
+- **Cold Start AUC (Day 0) → Day 14:** `0.463` → `0.836` [0.757, 0.914]
+- **Route Risk Exposure Delta:** `-36.63%` [-26.88%, -46.38%]
+- **Travel Time Overhead:** `+2.97 min` [+2.78, +3.16] min
+- **Scout Anti-Volume Alignment:** Spammer with 45 rapid unconfirmed reports earns **0 pts**, while an accurate scout earns **100 pts** upon corroboration.
+
+---
+
+## ⚠️ Known Limitations & Epistemic Boundaries
+
+In accordance with our strict honesty policy, SafeLayer documents where the system struggles:
+1. **AI Fake Media with Authentic GPS Trails (Catch rate 98%):** If an attacker physically walks a road segment while submitting AI-generated synthetic media, single-point checks pass. The false hazard is published until an independent commuter or scout refutes it.
+2. **Turned Sleeper Accounts (Catch rate 97.2%):** A user who builds a high Beta score ($\ge 0.85$) through genuine reports can temporarily poison a segment with 1-2 false reports before contradiction penalties downgrade their prior.
+3. **High Location Noise (> 70m):** In dense urban canyons where GPS drifts beyond 70 meters, false positive rejection reaches 28.5% for legitimate pedestrian sidewalk reports.
+4. **Daylight Street View Baseline (AUC 0.46 - 0.73):** Baseline Street View priors only capture static physical infrastructure (lamp poles, road surface). They cannot predict transient nocturnal conditions (power outages, flooding) until crowdsourced reports accumulate.
+5. **Real Multimodal Clips Dataset:** The `/eval` page displays 0 real-world clips until field dashcam recordings are provided in `scripts/real_clips/dataset_template.csv`. Current `/eval` metrics represent audited synthetic benchmarks.
+
+---
+
+## ⚖️ Ethics, Privacy & Responsible AI
+
+- **Zero Raw Video Retention**: Only ephemeral 3-5 compressed keyframes are processed. Faces and license plates are blurred client-side. Media is deleted immediately after extraction; `HazardReport` in the database stores 0 raw video or keyframes.
+- **Strictly Observable Infrastructure**: No demographic or social labeling permitted.
+- **Spatial Fuzzing**: Reporter coordinates fuzzed $\pm 25\text{m}$; Scout mode enforces a 500m residential blackout zone.
+- **Safe, Honest Language**: We never label routes as "safe" or guarantee outcomes; we report *"fewer reported physical issues"*.

@@ -1,0 +1,8 @@
+clip_id,video_path,audio_path,language,ground_truth_issue,ground_truth_severity,ground_truth_time_relevance,annotator_id,notes
+# Template schema for empirical real-world video & audio clips
+# Valid ground_truth_issue: lighting, road_condition, footpath_missing, isolated_stretch, obstruction, other
+# Valid ground_truth_time_relevance: day, night, always
+# Valid ground_truth_severity: 1, 2, 3, 4, 5
+# Valid language: en, hi, hinglish
+# Example row (uncomment when real files are placed in media/ folder):
+# clip_001,media/clip_001.mp4,media/clip_001.wav,hinglish,lighting,4,night,annotator_01,Scindia house unlit stretch recorded 21:30

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>SafeLayer</title>
+  <style>
+    body {
+      width: 320px;
+      margin: 0;
+      padding: 16px;
+      background: #0a0f1d;
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 10px;
+    }
+    .badge {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      padding: 2px 6px;
+      border-radius: 9999px;
+      font-size: 10px;
+      font-weight: bold;
+    }
+    .card {
+      background: #172138;
+      border: 1px solid #24324f;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+      font-size: 12px;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: #10b981;
+      color: #060911;
+      font-weight: bold;
+      padding: 8px 0;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-size: 12px;
+    }
+    .btn:hover {
+      background: #34d399;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <strong style="font-size: 14px;">SafeLayer</strong>
+    <span class="badge">Gemma 4</span>
+  </div>
+  <div class="card">
+    <div style="font-weight: 600; margin-bottom: 4px;">Active Overlay on Google Maps</div>
+    <div style="color: #94a3b8; font-size: 11px;">
+      Corridor: Central Delhi (CP - Tolstoy Marg)<br>
+      Active Hazards: 3 verified (Lighting, Potholes)
+    </div>
+  </div>
+  <a href="http://localhost:3000" target="_blank" class="btn">Open SafeLayer Web App</a>
+</body>
+</html>

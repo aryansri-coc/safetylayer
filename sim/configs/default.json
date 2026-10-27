@@ -1,0 +1,27 @@
+{
+  "seeds": 30,
+  "startSeed": 42,
+  "days": 14,
+  "world": {
+    "type": "corridor",
+    "hazardDensity": 0.35,
+    "fixedHazardRatio": 0.25,
+    "dynamicAppearRatio": 0.20
+  },
+  "population": {
+    "totalAgents": 50,
+    "reportsPerAgentPerDay": 1.5,
+    "locationNoiseMeters": 25,
+    "mix": {
+      "honest_accurate": 0.40,
+      "honest_noisy": 0.20,
+      "lazy_confirmer": 0.10,
+      "malicious_single": 0.05,
+      "gps_spoofer": 0.05,
+      "colluding_cluster": 0.05,
+      "ai_fake_media": 0.05,
+      "scout_riders": 0.05,
+      "sleeper": 0.05
+    }
+  }
+}

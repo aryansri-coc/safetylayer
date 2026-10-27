@@ -1,0 +1,94 @@
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-obsidian-950 text-titanium-200 antialiased overflow-x-hidden selection:bg-cyber-emerald/20 selection:text-white;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+}
+
+/* Custom precision titanium scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #06070a;
+}
+::-webkit-scrollbar-thumb {
+  background: #1b2133;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #272f47;
+}
+
+/* Precision Metallic Panels */
+.metallic-panel {
+  background: linear-gradient(145deg, rgba(17, 21, 32, 0.88) 0%, rgba(8, 10, 16, 0.94) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+}
+
+.metallic-panel-interactive {
+  background: linear-gradient(145deg, rgba(19, 24, 38, 0.8) 0%, rgba(10, 12, 20, 0.92) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.metallic-panel-interactive:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.metallic-chip {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+}
+
+.metallic-badge-emerald {
+  background: linear-gradient(180deg, rgba(0, 245, 160, 0.15) 0%, rgba(0, 245, 160, 0.05) 100%);
+  border: 1px solid rgba(0, 245, 160, 0.35);
+  box-shadow: 0 0 12px rgba(0, 245, 160, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+.metallic-badge-amber {
+  background: linear-gradient(180deg, rgba(245, 166, 35, 0.15) 0%, rgba(245, 166, 35, 0.05) 100%);
+  border: 1px solid rgba(245, 166, 35, 0.35);
+  box-shadow: 0 0 12px rgba(245, 166, 35, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+.metallic-badge-crimson {
+  background: linear-gradient(180deg, rgba(255, 51, 102, 0.15) 0%, rgba(255, 51, 102, 0.05) 100%);
+  border: 1px solid rgba(255, 51, 102, 0.35);
+  box-shadow: 0 0 12px rgba(255, 51, 102, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+/* 3D Vertical Laser Beacon */
+.beacon-beam {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 60px;
+  background: linear-gradient(0deg, rgba(255, 51, 102, 0.9) 0%, transparent 100%);
+  pointer-events: none;
+}
+.beacon-beam-emerald {
+  background: linear-gradient(0deg, rgba(0, 245, 160, 0.9) 0%, transparent 100%);
+}
+.beacon-beam-amber {
+  background: linear-gradient(0deg, rgba(245, 166, 35, 0.9) 0%, transparent 100%);
+}

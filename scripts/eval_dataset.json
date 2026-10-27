@@ -1,0 +1,150 @@
+{
+  "extraction_test_samples": [
+    {
+      "id": "ext_01",
+      "audio_claim": "Batti nahi chal rahi scindia house ke paas, bohot andhera hai.",
+      "language": "hinglish",
+      "true_issue": "lighting",
+      "true_time_relevance": "night",
+      "true_severity": 4
+    },
+    {
+      "id": "ext_02",
+      "audio_claim": "Deep trench and broken asphalt near metro gate 2.",
+      "language": "en",
+      "true_issue": "road_condition",
+      "true_time_relevance": "always",
+      "true_severity": 3
+    },
+    {
+      "id": "ext_03",
+      "audio_claim": "Footpath bilkul tuti hui hai, road pe chalna pad raha hai.",
+      "language": "hi",
+      "true_issue": "footpath_missing",
+      "true_time_relevance": "always",
+      "true_severity": 3
+    },
+    {
+      "id": "ext_04",
+      "audio_claim": "Underpass ke paas bohot sunsaan rasta hai, koi streetlight nahi.",
+      "language": "hinglish",
+      "true_issue": "isolated_stretch",
+      "true_time_relevance": "night",
+      "true_severity": 4
+    },
+    {
+      "id": "ext_05",
+      "audio_claim": "Fallen tree branch and construction debris blocking the left lane.",
+      "language": "en",
+      "true_issue": "obstruction",
+      "true_time_relevance": "always",
+      "true_severity": 4
+    },
+    {
+      "id": "ext_06",
+      "audio_claim": "Raat ko lights bilkul band rehti hain.",
+      "language": "hi",
+      "true_issue": "lighting",
+      "true_time_relevance": "night",
+      "true_severity": 4
+    },
+    {
+      "id": "ext_07",
+      "audio_claim": "Huge pothole filled with water.",
+      "language": "en",
+      "true_issue": "road_condition",
+      "true_time_relevance": "always",
+      "true_severity": 3
+    },
+    {
+      "id": "ext_08",
+      "audio_claim": "Pedestrian sidewalk absent for 200 meters.",
+      "language": "en",
+      "true_issue": "footpath_missing",
+      "true_time_relevance": "always",
+      "true_severity": 3
+    },
+    {
+      "id": "ext_09",
+      "audio_claim": "Dead end alley with no exit and zero illumination.",
+      "language": "en",
+      "true_issue": "isolated_stretch",
+      "true_time_relevance": "night",
+      "true_severity": 4
+    },
+    {
+      "id": "ext_10",
+      "audio_claim": "Concrete blocks dumped without reflectors.",
+      "language": "en",
+      "true_issue": "obstruction",
+      "true_time_relevance": "always",
+      "true_severity": 4
+    }
+  ],
+  "adversarial_test_samples": [
+    {
+      "id": "adv_01",
+      "type": "spoofed_teleport",
+      "speed_kmh": 220,
+      "distance_to_hazard_meters": 12000,
+      "is_adversarial": true,
+      "description": "Impossible velocity (> 200 km/h) remote submission"
+    },
+    {
+      "id": "adv_02",
+      "type": "stationary_bot",
+      "speed_kmh": 0.05,
+      "distance_to_hazard_meters": 5,
+      "is_adversarial": true,
+      "description": "Stationary synthetic bot emulating traffic halt"
+    },
+    {
+      "id": "adv_03",
+      "type": "out_of_bounds",
+      "speed_kmh": 24,
+      "distance_to_hazard_meters": 350,
+      "is_adversarial": true,
+      "description": "Trail never intersects segment (> 300m away)"
+    },
+    {
+      "id": "adv_04",
+      "type": "cross_modal_mismatch",
+      "speed_kmh": 18,
+      "distance_to_hazard_meters": 20,
+      "is_adversarial": true,
+      "description": "Daylight noon photo claiming pitch dark night outage"
+    },
+    {
+      "id": "adv_05",
+      "type": "legitimate_two_wheeler",
+      "speed_kmh": 22,
+      "distance_to_hazard_meters": 15,
+      "is_adversarial": false,
+      "description": "Realistic two-wheeler commuter transit"
+    },
+    {
+      "id": "adv_06",
+      "type": "legitimate_pedestrian",
+      "speed_kmh": 4.5,
+      "distance_to_hazard_meters": 8,
+      "is_adversarial": false,
+      "description": "Authentic pedestrian walking speed"
+    },
+    {
+      "id": "adv_07",
+      "type": "legitimate_car_commuter",
+      "speed_kmh": 35,
+      "distance_to_hazard_meters": 22,
+      "is_adversarial": false,
+      "description": "Evening arterial traffic transit"
+    },
+    {
+      "id": "adv_08",
+      "type": "sybil_burst_cluster",
+      "speed_kmh": 15,
+      "distance_to_hazard_meters": 10,
+      "is_adversarial": true,
+      "description": "Sudden burst of 6 new accounts in 5 minutes"
+    }
+  ]
+}

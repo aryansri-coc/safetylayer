@@ -1,0 +1,1238 @@
+{
+  "metadata": {
+    "generatedAt": "2026-10-26T19:01:34.356Z",
+    "gitCommit": "dev-uncommitted",
+    "seedsRun": 30,
+    "startSeed": 42,
+    "durationSeconds": 3.11,
+    "config": {
+      "seeds": 30,
+      "startSeed": 42,
+      "days": 14,
+      "world": {
+        "type": "corridor",
+        "hazardDensity": 0.35,
+        "fixedHazardRatio": 0.25,
+        "dynamicAppearRatio": 0.2
+      },
+      "population": {
+        "totalAgents": 50,
+        "reportsPerAgentPerDay": 1.5,
+        "locationNoiseMeters": 25,
+        "mix": {
+          "honest_accurate": 0.4,
+          "honest_noisy": 0.2,
+          "lazy_confirmer": 0.1,
+          "malicious_single": 0.05,
+          "gps_spoofer": 0.05,
+          "colluding_cluster": 0.05,
+          "ai_fake_media": 0.05,
+          "scout_riders": 0.05,
+          "sleeper": 0.05
+        }
+      }
+    }
+  },
+  "distributions": {
+    "precision": {
+      "n": 30,
+      "mean": 70.797,
+      "stdDev": 9.7808,
+      "ci95Lower": 67.1452,
+      "ci95Upper": 74.4488,
+      "median": 69.835,
+      "min": 50.79,
+      "max": 89.03,
+      "p25": 63.83,
+      "p75": 79.03
+    },
+    "recall": {
+      "n": 30,
+      "mean": 94.9427,
+      "stdDev": 3.0758,
+      "ci95Lower": 93.7943,
+      "ci95Upper": 96.0911,
+      "median": 95.17,
+      "min": 87.08,
+      "max": 100,
+      "p25": 93.79,
+      "p75": 97.24
+    },
+    "f1Score": {
+      "n": 30,
+      "mean": 80.7703,
+      "stdDev": 6.8593,
+      "ci95Lower": 78.2093,
+      "ci95Upper": 83.3313,
+      "median": 80.54,
+      "min": 64.82,
+      "max": 92,
+      "p25": 75.19,
+      "p75": 86.98
+    },
+    "coldStartAUC": {
+      "n": 30,
+      "mean": 0.4634,
+      "stdDev": 0.2712,
+      "ci95Lower": 0.3622,
+      "ci95Upper": 0.5647,
+      "median": 0.4143,
+      "min": 0,
+      "max": 1,
+      "p25": 0.2778,
+      "p75": 0.65
+    },
+    "day14AUC": {
+      "n": 30,
+      "mean": 0.8355,
+      "stdDev": 0.2096,
+      "ci95Lower": 0.7573,
+      "ci95Upper": 0.9138,
+      "median": 0.9018,
+      "min": 0.125,
+      "max": 1,
+      "p25": 0.7143,
+      "p75": 1
+    },
+    "timeOverheadMinutes": {
+      "n": 30,
+      "mean": 2.9683,
+      "stdDev": 0.5167,
+      "ci95Lower": 2.7754,
+      "ci95Upper": 3.1613,
+      "median": 2.95,
+      "min": 1.9,
+      "max": 4,
+      "p25": 2.55,
+      "p75": 3.2
+    },
+    "riskReductionPct": {
+      "n": 30,
+      "mean": 36.6267,
+      "stdDev": 26.1177,
+      "ci95Lower": 26.8752,
+      "ci95Upper": 46.3781,
+      "median": 29.075,
+      "min": 1,
+      "max": 96,
+      "p25": 15,
+      "p75": 60
+    },
+    "attackerRecall": {
+      "malicious_single": {
+        "n": 30,
+        "mean": 100,
+        "stdDev": 0,
+        "ci95Lower": 100,
+        "ci95Upper": 100,
+        "median": 100,
+        "min": 100,
+        "max": 100,
+        "p25": 100,
+        "p75": 100
+      },
+      "gps_spoofer": {
+        "n": 30,
+        "mean": 100,
+        "stdDev": 0,
+        "ci95Lower": 100,
+        "ci95Upper": 100,
+        "median": 100,
+        "min": 100,
+        "max": 100,
+        "p25": 100,
+        "p75": 100
+      },
+      "colluding_cluster": {
+        "n": 30,
+        "mean": 97.5007,
+        "stdDev": 4.4575,
+        "ci95Lower": 95.8364,
+        "ci95Upper": 99.1649,
+        "median": 100,
+        "min": 83.33,
+        "max": 100,
+        "p25": 91.67,
+        "p75": 100
+      },
+      "ai_fake_media": {
+        "n": 30,
+        "mean": 98.0333,
+        "stdDev": 4.7037,
+        "ci95Lower": 96.2771,
+        "ci95Upper": 99.7895,
+        "median": 100,
+        "min": 78.79,
+        "max": 100,
+        "p25": 100,
+        "p75": 100
+      },
+      "sleeper": {
+        "n": 30,
+        "mean": 97.1707,
+        "stdDev": 4.0399,
+        "ci95Lower": 95.6623,
+        "ci95Upper": 98.679,
+        "median": 100,
+        "min": 86.67,
+        "max": 100,
+        "p25": 93.33,
+        "p75": 100
+      }
+    }
+  },
+  "representativeDetails": {
+    "exp1": {
+      "archetypeTrajectories": {
+        "honest_accurate": [
+          0.5,
+          0.6,
+          0.67,
+          0.71,
+          0.75,
+          0.78,
+          0.8,
+          0.82,
+          0.83,
+          0.85,
+          0.86,
+          0.87,
+          0.88,
+          0.88,
+          0.89,
+          0.89
+        ],
+        "honest_noisy": [
+          0.5,
+          0.6,
+          0.67,
+          0.71,
+          0.75,
+          0.78,
+          0.8,
+          0.82,
+          0.83,
+          0.85,
+          0.86,
+          0.87,
+          0.88,
+          0.88,
+          0.89,
+          0.89
+        ],
+        "lazy_confirmer": [
+          0.5,
+          0.6,
+          0.5,
+          0.43,
+          0.5,
+          0.44,
+          0.4,
+          0.45,
+          0.42,
+          0.38,
+          0.36,
+          0.33,
+          0.38,
+          0.41,
+          0.39,
+          0.37
+        ],
+        "malicious_single": [
+          0.5,
+          0.4,
+          0.33,
+          0.29,
+          0.25,
+          0.22,
+          0.2,
+          0.18,
+          0.17,
+          0.15,
+          0.14,
+          0.13,
+          0.13,
+          0.12,
+          0.11,
+          0.11
+        ],
+        "gps_spoofer": [
+          0.5,
+          0.4,
+          0.33,
+          0.29,
+          0.25,
+          0.22,
+          0.2,
+          0.18,
+          0.17,
+          0.15,
+          0.14,
+          0.13,
+          0.13,
+          0.12,
+          0.11,
+          0.11
+        ],
+        "colluding_cluster": [
+          0.5,
+          0.4,
+          0.33,
+          0.29,
+          0.25,
+          0.22,
+          0.2,
+          0.18,
+          0.17,
+          0.15,
+          0.21,
+          0.2,
+          0.19,
+          0.18,
+          0.17,
+          0.16
+        ],
+        "ai_fake_media": [
+          0.5,
+          0.4,
+          0.33,
+          0.29,
+          0.25,
+          0.22,
+          0.2,
+          0.18,
+          0.17,
+          0.15,
+          0.14,
+          0.2,
+          0.25,
+          0.24,
+          0.22,
+          0.21
+        ],
+        "scout_riders": [
+          0.5,
+          0.6,
+          0.67,
+          0.71,
+          0.75,
+          0.78,
+          0.8,
+          0.82,
+          0.83,
+          0.85,
+          0.86,
+          0.87,
+          0.88,
+          0.88,
+          0.89,
+          0.89
+        ],
+        "sleeper": [
+          0.5,
+          0.6,
+          0.67,
+          0.71,
+          0.75,
+          0.78,
+          0.7,
+          0.64,
+          0.58,
+          0.54,
+          0.5,
+          0.47,
+          0.44,
+          0.41,
+          0.39,
+          0.37
+        ]
+      }
+    },
+    "exp2": {
+      "overall": {
+        "totalSubmitted": 259,
+        "falseReportsSubmitted": 157,
+        "genuineReportsSubmitted": 102,
+        "rejectedFalseReports": 154,
+        "acceptedFalseReports": 3,
+        "rejectedGenuineReports": 48,
+        "acceptedGenuineReports": 54,
+        "precision": 76.24,
+        "recall": 98.09,
+        "f1Score": 85.79
+      },
+      "byAttackerType": {
+        "honest_accurate": {
+          "totalSubmitted": 28,
+          "falseReportsSubmitted": 0,
+          "genuineReportsSubmitted": 28,
+          "rejectedFalseReports": 0,
+          "acceptedFalseReports": 0,
+          "rejectedGenuineReports": 8,
+          "acceptedGenuineReports": 20,
+          "precision": 0,
+          "recall": 0,
+          "f1Score": 0
+        },
+        "honest_noisy": {
+          "totalSubmitted": 17,
+          "falseReportsSubmitted": 0,
+          "genuineReportsSubmitted": 17,
+          "rejectedFalseReports": 0,
+          "acceptedFalseReports": 0,
+          "rejectedGenuineReports": 6,
+          "acceptedGenuineReports": 11,
+          "precision": 0,
+          "recall": 0,
+          "f1Score": 0
+        },
+        "lazy_confirmer": {
+          "totalSubmitted": 47,
+          "falseReportsSubmitted": 6,
+          "genuineReportsSubmitted": 41,
+          "rejectedFalseReports": 3,
+          "acceptedFalseReports": 3,
+          "rejectedGenuineReports": 20,
+          "acceptedGenuineReports": 21,
+          "precision": 13.04,
+          "recall": 50,
+          "f1Score": 20.69
+        },
+        "malicious_single": {
+          "totalSubmitted": 29,
+          "falseReportsSubmitted": 29,
+          "genuineReportsSubmitted": 0,
+          "rejectedFalseReports": 29,
+          "acceptedFalseReports": 0,
+          "rejectedGenuineReports": 0,
+          "acceptedGenuineReports": 0,
+          "precision": 100,
+          "recall": 100,
+          "f1Score": 100
+        },
+        "gps_spoofer": {
+          "totalSubmitted": 32,
+          "falseReportsSubmitted": 32,
+          "genuineReportsSubmitted": 0,
+          "rejectedFalseReports": 32,
+          "acceptedFalseReports": 0,
+          "rejectedGenuineReports": 0,
+          "acceptedGenuineReports": 0,
+          "precision": 100,
+          "recall": 100,
+          "f1Score": 100
+        },
+        "scout_riders": {
+          "totalSubmitted": 11,
+          "falseReportsSubmitted": 0,
+          "genuineReportsSubmitted": 11,
+          "rejectedFalseReports": 0,
+          "acceptedFalseReports": 0,
+          "rejectedGenuineReports": 11,
+          "acceptedGenuineReports": 0,
+          "precision": 0,
+          "recall": 0,
+          "f1Score": 0
+        },
+        "sleeper": {
+          "totalSubmitted": 51,
+          "falseReportsSubmitted": 46,
+          "genuineReportsSubmitted": 5,
+          "rejectedFalseReports": 46,
+          "acceptedFalseReports": 0,
+          "rejectedGenuineReports": 3,
+          "acceptedGenuineReports": 2,
+          "precision": 93.88,
+          "recall": 100,
+          "f1Score": 96.84
+        },
+        "ai_fake_media": {
+          "totalSubmitted": 32,
+          "falseReportsSubmitted": 32,
+          "genuineReportsSubmitted": 0,
+          "rejectedFalseReports": 32,
+          "acceptedFalseReports": 0,
+          "rejectedGenuineReports": 0,
+          "acceptedGenuineReports": 0,
+          "precision": 100,
+          "recall": 100,
+          "f1Score": 100
+        },
+        "colluding_cluster": {
+          "totalSubmitted": 12,
+          "falseReportsSubmitted": 12,
+          "genuineReportsSubmitted": 0,
+          "rejectedFalseReports": 12,
+          "acceptedFalseReports": 0,
+          "rejectedGenuineReports": 0,
+          "acceptedGenuineReports": 0,
+          "precision": 100,
+          "recall": 100,
+          "f1Score": 100
+        }
+      }
+    },
+    "exp3": {
+      "learningCurve": [
+        {
+          "day": 0,
+          "reportCount": 17,
+          "overallAUC": 0.3571,
+          "byHazardAUC": {
+            "lighting": 0.5,
+            "road_condition": 0.5,
+            "footpath_missing": 1,
+            "isolated_stretch": 0.5,
+            "obstruction": 1
+          }
+        },
+        {
+          "day": 3,
+          "reportCount": 47,
+          "overallAUC": 0.4286,
+          "byHazardAUC": {
+            "lighting": 0.5,
+            "road_condition": 0.5,
+            "footpath_missing": 1,
+            "isolated_stretch": 0.5,
+            "obstruction": 1
+          }
+        },
+        {
+          "day": 7,
+          "reportCount": 74,
+          "overallAUC": 1,
+          "byHazardAUC": {
+            "lighting": 0.5,
+            "road_condition": 0.5,
+            "footpath_missing": 1,
+            "isolated_stretch": 0.5,
+            "obstruction": 0.5
+          }
+        },
+        {
+          "day": 14,
+          "reportCount": 102,
+          "overallAUC": 1,
+          "byHazardAUC": {
+            "lighting": 0.5,
+            "road_condition": 0.5,
+            "footpath_missing": 1,
+            "isolated_stretch": 0.5,
+            "obstruction": 0.5
+          }
+        }
+      ]
+    },
+    "exp4": {
+      "lightingDiurnalProfile": [
+        {
+          "hour": 0,
+          "groundTruthActive": true,
+          "predictedRiskScore": 0.34,
+          "diurnalFactor": 1
+        },
+        {
+          "hour": 1,
+          "groundTruthActive": true,
+          "predictedRiskScore": 0.33,
+          "diurnalFactor": 1
+        },
+        {
+          "hour": 2,
+          "groundTruthActive": true,
+          "predictedRiskScore": 0.33,
+          "diurnalFactor": 1
+        },
+        {
+          "hour": 3,
+          "groundTruthActive": true,
+          "predictedRiskScore": 0.33,
+          "diurnalFactor": 1
+        },
+        {
+          "hour": 4,
+          "groundTruthActive": true,
+          "predictedRiskScore": 0.29,
+          "diurnalFactor": 0.85
+        },
+        {
+          "hour": 5,
+          "groundTruthActive": true,
+          "predictedRiskScore": 0.29,
+          "diurnalFactor": 0.85
+        },
+        {
+          "hour": 6,
+          "groundTruthActive": false,
+          "predictedRiskScore": 0.13,
+          "diurnalFactor": 0.3
+        },
+        {
+          "hour": 7,
+          "groundTruthActive": false,
+          "predictedRiskScore": 0.07,
+          "diurnalFactor": 0.05
+        },
+        {
+          "hour": 8,
+          "groundTruthActive": false,
+          "predictedRiskScore": 0.07,
+          "diurnalFactor": 0.05
+        },
+        {
+          "hour": 9,
+          "groundTruthActive": false,
+          "predictedRiskScore": 0.07,
+          "diurnalFactor": 0.05
+        },
+        {
+          "hour": 10,
+          "groundTruthActive": false,
+          "predictedRiskScore": 0.07,
+          "diurnalFactor": 0.05
+        },
+        {
+          "hour": 11,
+          "groundTruthActive": false,
+          "predictedRiskScore": 0.07,
+          "diurnalFactor": 0.05
+        },
+        {
+          "hour": 12,
+          "groundTruthActive": false,
+          "predictedRiskScore": 0.07,
+          "diurnalFactor": 0.05
+        },
+        {
+          "hour": 13,
+          "groundTruthActive": false,
+          "predictedRiskScore": 0.07,
+          "diurnalFactor": 0.05
+        },
+        {
+          "hour": 14,
+          "groundTruthActive": false,
+          "predictedRiskScore": 0.07,
+          "diurnalFactor": 0.05
+        },
+        {
+          "hour": 15,
+          "groundTruthActive": false,
+          "predictedRiskScore": 0.07,
+          "diurnalFactor": 0.05
+        },
+        {
+          "hour": 16,
+          "groundTruthActive": false,
+          "predictedRiskScore": 0.07,
+          "diurnalFactor": 0.05
+        },
+        {
+          "hour": 17,
+          "groundTruthActive": false,
+          "predictedRiskScore": 0.07,
+          "diurnalFactor": 0.05
+        },
+        {
+          "hour": 18,
+          "groundTruthActive": false,
+          "predictedRiskScore": 0.12,
+          "diurnalFactor": 0.3
+        },
+        {
+          "hour": 19,
+          "groundTruthActive": true,
+          "predictedRiskScore": 0.26,
+          "diurnalFactor": 0.85
+        },
+        {
+          "hour": 20,
+          "groundTruthActive": true,
+          "predictedRiskScore": 0.26,
+          "diurnalFactor": 0.85
+        },
+        {
+          "hour": 21,
+          "groundTruthActive": true,
+          "predictedRiskScore": 0.26,
+          "diurnalFactor": 0.85
+        },
+        {
+          "hour": 22,
+          "groundTruthActive": true,
+          "predictedRiskScore": 0.29,
+          "diurnalFactor": 1
+        },
+        {
+          "hour": 23,
+          "groundTruthActive": true,
+          "predictedRiskScore": 0.29,
+          "diurnalFactor": 1
+        }
+      ],
+      "hourlyMAE": 0.2962,
+      "repairDecayProfile": [
+        {
+          "daysAfterFix": 0,
+          "groundTruthActive": true,
+          "effectiveRiskScore": 0.87,
+          "decayPercentage": 25
+        },
+        {
+          "daysAfterFix": 0.5,
+          "groundTruthActive": false,
+          "effectiveRiskScore": 0.54,
+          "decayPercentage": 75
+        },
+        {
+          "daysAfterFix": 1,
+          "groundTruthActive": false,
+          "effectiveRiskScore": 0.31,
+          "decayPercentage": 100
+        },
+        {
+          "daysAfterFix": 2,
+          "groundTruthActive": false,
+          "effectiveRiskScore": 0.14,
+          "decayPercentage": 100
+        },
+        {
+          "daysAfterFix": 3,
+          "groundTruthActive": false,
+          "effectiveRiskScore": 0.09,
+          "decayPercentage": 100
+        },
+        {
+          "daysAfterFix": 5,
+          "groundTruthActive": false,
+          "effectiveRiskScore": 0.08,
+          "decayPercentage": 100
+        },
+        {
+          "daysAfterFix": 7,
+          "groundTruthActive": false,
+          "effectiveRiskScore": 0.08,
+          "decayPercentage": 100
+        },
+        {
+          "daysAfterFix": 10,
+          "groundTruthActive": false,
+          "effectiveRiskScore": 0.08,
+          "decayPercentage": 100
+        },
+        {
+          "daysAfterFix": 14,
+          "groundTruthActive": false,
+          "effectiveRiskScore": 0.08,
+          "decayPercentage": 100
+        }
+      ],
+      "staleDisappearanceDays": 1
+    },
+    "exp5": {
+      "timeOverheadDistribution": {
+        "n": 20,
+        "mean": 3.1,
+        "stdDev": 2.125,
+        "ci95Lower": 2.1055,
+        "ci95Upper": 4.0945,
+        "median": 3,
+        "min": 0,
+        "max": 9,
+        "p25": 2,
+        "p75": 4
+      },
+      "riskReductionDistribution": {
+        "n": 20,
+        "mean": 56,
+        "stdDev": 40.8334,
+        "ci95Lower": 36.8896,
+        "ci95Upper": 75.1104,
+        "median": 20,
+        "min": 20,
+        "max": 100,
+        "p25": 20,
+        "p75": 100
+      },
+      "samples": [
+        {
+          "odPairId": "od_sample_0",
+          "travelMode": "two_wheeler",
+          "queryHour": 21,
+          "shortestDurationMin": 2,
+          "safestDurationMin": 4,
+          "timeOverheadMin": 2,
+          "shortestGroundTruthExposure": 0,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 20,
+          "recommendedRouteId": "route_direct_0"
+        },
+        {
+          "odPairId": "od_sample_1",
+          "travelMode": "walking",
+          "queryHour": 19,
+          "shortestDurationMin": 4,
+          "safestDurationMin": 13,
+          "timeOverheadMin": 9,
+          "shortestGroundTruthExposure": 4,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 100,
+          "recommendedRouteId": "route_direct_1"
+        },
+        {
+          "odPairId": "od_sample_2",
+          "travelMode": "walking",
+          "queryHour": 22,
+          "shortestDurationMin": 4,
+          "safestDurationMin": 12,
+          "timeOverheadMin": 8,
+          "shortestGroundTruthExposure": 4,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 100,
+          "recommendedRouteId": "route_safer_2"
+        },
+        {
+          "odPairId": "od_sample_3",
+          "travelMode": "two_wheeler",
+          "queryHour": 20,
+          "shortestDurationMin": 2,
+          "safestDurationMin": 4,
+          "timeOverheadMin": 2,
+          "shortestGroundTruthExposure": 0,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 20,
+          "recommendedRouteId": "route_direct_3"
+        },
+        {
+          "odPairId": "od_sample_4",
+          "travelMode": "two_wheeler",
+          "queryHour": 22,
+          "shortestDurationMin": 1,
+          "safestDurationMin": 4,
+          "timeOverheadMin": 3,
+          "shortestGroundTruthExposure": 0,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 20,
+          "recommendedRouteId": "route_direct_4"
+        },
+        {
+          "odPairId": "od_sample_5",
+          "travelMode": "driving",
+          "queryHour": 21,
+          "shortestDurationMin": 1,
+          "safestDurationMin": 4,
+          "timeOverheadMin": 3,
+          "shortestGroundTruthExposure": 4,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 100,
+          "recommendedRouteId": "route_direct_5"
+        },
+        {
+          "odPairId": "od_sample_6",
+          "travelMode": "two_wheeler",
+          "queryHour": 22,
+          "shortestDurationMin": 2,
+          "safestDurationMin": 5,
+          "timeOverheadMin": 3,
+          "shortestGroundTruthExposure": 3,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 100,
+          "recommendedRouteId": "route_direct_6"
+        },
+        {
+          "odPairId": "od_sample_7",
+          "travelMode": "night_commute",
+          "queryHour": 23,
+          "shortestDurationMin": 2,
+          "safestDurationMin": 3,
+          "timeOverheadMin": 1,
+          "shortestGroundTruthExposure": 0,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 20,
+          "recommendedRouteId": "route_direct_7"
+        },
+        {
+          "odPairId": "od_sample_8",
+          "travelMode": "walking",
+          "queryHour": 20,
+          "shortestDurationMin": 14,
+          "safestDurationMin": 12,
+          "timeOverheadMin": 0,
+          "shortestGroundTruthExposure": 3,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 100,
+          "recommendedRouteId": "route_safer_8"
+        },
+        {
+          "odPairId": "od_sample_9",
+          "travelMode": "walking",
+          "queryHour": 21,
+          "shortestDurationMin": 11,
+          "safestDurationMin": 14,
+          "timeOverheadMin": 3,
+          "shortestGroundTruthExposure": 0,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 20,
+          "recommendedRouteId": "route_safer_9"
+        },
+        {
+          "odPairId": "od_sample_10",
+          "travelMode": "two_wheeler",
+          "queryHour": 21,
+          "shortestDurationMin": 1,
+          "safestDurationMin": 3,
+          "timeOverheadMin": 2,
+          "shortestGroundTruthExposure": 4,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 100,
+          "recommendedRouteId": "route_direct_10"
+        },
+        {
+          "odPairId": "od_sample_11",
+          "travelMode": "driving",
+          "queryHour": 20,
+          "shortestDurationMin": 1,
+          "safestDurationMin": 3,
+          "timeOverheadMin": 2,
+          "shortestGroundTruthExposure": 0,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 20,
+          "recommendedRouteId": "route_direct_11"
+        },
+        {
+          "odPairId": "od_sample_12",
+          "travelMode": "driving",
+          "queryHour": 20,
+          "shortestDurationMin": 1,
+          "safestDurationMin": 5,
+          "timeOverheadMin": 4,
+          "shortestGroundTruthExposure": 4,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 100,
+          "recommendedRouteId": "route_direct_12"
+        },
+        {
+          "odPairId": "od_sample_13",
+          "travelMode": "night_commute",
+          "queryHour": 19,
+          "shortestDurationMin": 1,
+          "safestDurationMin": 4,
+          "timeOverheadMin": 3,
+          "shortestGroundTruthExposure": 3,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 100,
+          "recommendedRouteId": "route_direct_13"
+        },
+        {
+          "odPairId": "od_sample_14",
+          "travelMode": "two_wheeler",
+          "queryHour": 21,
+          "shortestDurationMin": 2,
+          "safestDurationMin": 5,
+          "timeOverheadMin": 3,
+          "shortestGroundTruthExposure": 0,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 20,
+          "recommendedRouteId": "route_direct_14"
+        },
+        {
+          "odPairId": "od_sample_15",
+          "travelMode": "driving",
+          "queryHour": 20,
+          "shortestDurationMin": 2,
+          "safestDurationMin": 5,
+          "timeOverheadMin": 3,
+          "shortestGroundTruthExposure": 0,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 20,
+          "recommendedRouteId": "route_direct_15"
+        },
+        {
+          "odPairId": "od_sample_16",
+          "travelMode": "two_wheeler",
+          "queryHour": 19,
+          "shortestDurationMin": 1,
+          "safestDurationMin": 5,
+          "timeOverheadMin": 4,
+          "shortestGroundTruthExposure": 4,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 100,
+          "recommendedRouteId": "route_direct_16"
+        },
+        {
+          "odPairId": "od_sample_17",
+          "travelMode": "driving",
+          "queryHour": 22,
+          "shortestDurationMin": 1,
+          "safestDurationMin": 5,
+          "timeOverheadMin": 4,
+          "shortestGroundTruthExposure": 0,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 20,
+          "recommendedRouteId": "route_direct_17"
+        },
+        {
+          "odPairId": "od_sample_18",
+          "travelMode": "night_commute",
+          "queryHour": 21,
+          "shortestDurationMin": 1,
+          "safestDurationMin": 3,
+          "timeOverheadMin": 2,
+          "shortestGroundTruthExposure": 0,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 20,
+          "recommendedRouteId": "route_direct_18"
+        },
+        {
+          "odPairId": "od_sample_19",
+          "travelMode": "two_wheeler",
+          "queryHour": 23,
+          "shortestDurationMin": 2,
+          "safestDurationMin": 3,
+          "timeOverheadMin": 1,
+          "shortestGroundTruthExposure": 0,
+          "safestGroundTruthExposure": 0,
+          "riskReductionPct": 20,
+          "recommendedRouteId": "route_direct_19"
+        }
+      ]
+    },
+    "exp6": {
+      "ablations": [
+        {
+          "ablationId": "full",
+          "name": "Full SafeLayer (Modules A-E)",
+          "attackRejectionRate": 58,
+          "sybilLeakagePct": 75,
+          "coldStartAUC": 0.464,
+          "routeSafetyScore": 92,
+          "stalePersistenceDays": 3,
+          "description": "Production architecture with all checks enabled"
+        },
+        {
+          "ablationId": "no_trust",
+          "name": "Without Trust Layer (Module C)",
+          "attackRejectionRate": 0,
+          "sybilLeakagePct": 100,
+          "coldStartAUC": 0.464,
+          "routeSafetyScore": 68,
+          "stalePersistenceDays": 3,
+          "description": "Beta prior disabled; all reports treated with equal weight"
+        },
+        {
+          "ablationId": "no_presence",
+          "name": "Without GPS Presence Check",
+          "attackRejectionRate": 18.5,
+          "sybilLeakagePct": 100,
+          "coldStartAUC": 0.464,
+          "routeSafetyScore": 74,
+          "stalePersistenceDays": 3,
+          "description": "No trail intersection or transit velocity validation"
+        },
+        {
+          "ablationId": "no_collusion",
+          "name": "Without Collusion Detection",
+          "attackRejectionRate": 58,
+          "sybilLeakagePct": 75,
+          "coldStartAUC": 0.464,
+          "routeSafetyScore": 83,
+          "stalePersistenceDays": 3,
+          "description": "No multi-account temporal cluster detection"
+        },
+        {
+          "ablationId": "no_baseline",
+          "name": "Without Street View Prior (Module B)",
+          "attackRejectionRate": 58,
+          "sybilLeakagePct": 75,
+          "coldStartAUC": 0.429,
+          "routeSafetyScore": 76,
+          "stalePersistenceDays": 3,
+          "description": "Cold-start prior zeroed out; unvisited segments have zero baseline"
+        },
+        {
+          "ablationId": "no_decay",
+          "name": "Without Time Decay (Module D)",
+          "attackRejectionRate": 58,
+          "sybilLeakagePct": 75,
+          "coldStartAUC": 0.464,
+          "routeSafetyScore": 81,
+          "stalePersistenceDays": 60,
+          "description": "Fixed/stale reports never decay with half-life"
+        }
+      ]
+    },
+    "exp7": {
+      "maliciousFractionCurve": [
+        {
+          "parameter": "malicious_fraction",
+          "paramValue": 0,
+          "label": "0% Attackers",
+          "rejectionRate": 97.5,
+          "falsePositiveRate": 2,
+          "riskEstimationAUC": 0.9
+        },
+        {
+          "parameter": "malicious_fraction",
+          "paramValue": 0.1,
+          "label": "10% Attackers",
+          "rejectionRate": 94.3,
+          "falsePositiveRate": 2.5,
+          "riskEstimationAUC": 0.875
+        },
+        {
+          "parameter": "malicious_fraction",
+          "paramValue": 0.2,
+          "label": "20% Attackers",
+          "rejectionRate": 91.1,
+          "falsePositiveRate": 3,
+          "riskEstimationAUC": 0.85
+        },
+        {
+          "parameter": "malicious_fraction",
+          "paramValue": 0.3,
+          "label": "30% Attackers",
+          "rejectionRate": 87.9,
+          "falsePositiveRate": 3.5,
+          "riskEstimationAUC": 0.825
+        },
+        {
+          "parameter": "malicious_fraction",
+          "paramValue": 0.4,
+          "label": "40% Attackers",
+          "rejectionRate": 84.7,
+          "falsePositiveRate": 4,
+          "riskEstimationAUC": 0.8
+        },
+        {
+          "parameter": "malicious_fraction",
+          "paramValue": 0.5,
+          "label": "50% Attackers",
+          "rejectionRate": 81.5,
+          "falsePositiveRate": 4.5,
+          "riskEstimationAUC": 0.775
+        }
+      ],
+      "locationNoiseCurve": [
+        {
+          "parameter": "location_noise",
+          "paramValue": 5,
+          "label": "±5m Noise",
+          "rejectionRate": 95,
+          "falsePositiveRate": 0,
+          "riskEstimationAUC": 0.9
+        },
+        {
+          "parameter": "location_noise",
+          "paramValue": 15,
+          "label": "±15m Noise",
+          "rejectionRate": 95,
+          "falsePositiveRate": 0,
+          "riskEstimationAUC": 0.9
+        },
+        {
+          "parameter": "location_noise",
+          "paramValue": 30,
+          "label": "±30m Noise",
+          "rejectionRate": 95,
+          "falsePositiveRate": 1,
+          "riskEstimationAUC": 0.9
+        },
+        {
+          "parameter": "location_noise",
+          "paramValue": 50,
+          "label": "±50m Noise",
+          "rejectionRate": 95,
+          "falsePositiveRate": 11,
+          "riskEstimationAUC": 0.9
+        },
+        {
+          "parameter": "location_noise",
+          "paramValue": 70,
+          "label": "±70m Noise",
+          "rejectionRate": 95,
+          "falsePositiveRate": 39,
+          "riskEstimationAUC": 0.9
+        },
+        {
+          "parameter": "location_noise",
+          "paramValue": 90,
+          "label": "±90m Noise",
+          "rejectionRate": 95,
+          "falsePositiveRate": 42,
+          "riskEstimationAUC": 0.84
+        },
+        {
+          "parameter": "location_noise",
+          "paramValue": 120,
+          "label": "±120m Noise",
+          "rejectionRate": 95,
+          "falsePositiveRate": 59,
+          "riskEstimationAUC": 0.75
+        }
+      ],
+      "sparsityCurve": [
+        {
+          "parameter": "sparsity",
+          "paramValue": 10,
+          "label": "10% Coverage",
+          "rejectionRate": 96,
+          "falsePositiveRate": 2.2,
+          "riskEstimationAUC": 0.676
+        },
+        {
+          "parameter": "sparsity",
+          "paramValue": 25,
+          "label": "25% Coverage",
+          "rejectionRate": 96,
+          "falsePositiveRate": 2.2,
+          "riskEstimationAUC": 0.715
+        },
+        {
+          "parameter": "sparsity",
+          "paramValue": 50,
+          "label": "50% Coverage",
+          "rejectionRate": 96,
+          "falsePositiveRate": 2.2,
+          "riskEstimationAUC": 0.78
+        },
+        {
+          "parameter": "sparsity",
+          "paramValue": 75,
+          "label": "75% Coverage",
+          "rejectionRate": 96,
+          "falsePositiveRate": 2.2,
+          "riskEstimationAUC": 0.845
+        },
+        {
+          "parameter": "sparsity",
+          "paramValue": 100,
+          "label": "100% Coverage",
+          "rejectionRate": 96,
+          "falsePositiveRate": 2.2,
+          "riskEstimationAUC": 0.91
+        }
+      ]
+    },
+    "exp8": {
+      "accurateScout": {
+        "submittedCount": 4,
+        "corroboratedCount": 4,
+        "initialVestedPoints": 0,
+        "finalVestedPoints": 100,
+        "dailyCapApplied": true
+      },
+      "spammer": {
+        "submittedCount": 45,
+        "corroboratedCount": 0,
+        "unconfirmedPendingCount": 42,
+        "contradictedCount": 3,
+        "initialVestedPoints": 0,
+        "finalVestedPoints": 0,
+        "penaltiesIncurred": 90
+      },
+      "spammerEarnsStrictlyLess": true,
+      "scoutAdvantageMultiplier": 100
+    }
+  }
+}
