@@ -2,15 +2,20 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Activity,
   BarChart3,
   Bike,
   Building2,
+  Compass,
   Cpu,
   Info,
+  LayoutDashboard,
+  MapPin,
   Menu,
   MoreVertical,
+  Navigation,
   Plus,
   Shield,
   Sparkles,
@@ -36,6 +41,7 @@ export default function Navbar({
   onOpenDevInfo,
   isDemoActive,
 }: NavbarProps) {
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -69,7 +75,7 @@ export default function Navbar({
   return (
     <header className="w-full bg-obsidian-950 border-b border-white/10 px-3.5 sm:px-6 py-2.5 flex items-center justify-between z-40 shrink-0 select-none font-sans">
       {/* Brand (B1: SafetyLayer) */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4 lg:gap-6">
         <Link href="/" className="flex items-center gap-2.5 group">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-b from-white to-titanium-400 p-[1px] shadow-lg shadow-black/40 group-hover:scale-105 transition-transform">
             <div className="w-full h-full rounded-[11px] bg-obsidian-900 flex items-center justify-center">
@@ -87,6 +93,57 @@ export default function Navbar({
             </p>
           </div>
         </Link>
+
+        {/* Center Nav Links for desktop */}
+        <nav className="hidden md:flex items-center gap-1 bg-obsidian-900/90 border border-white/10 p-1 rounded-xl">
+          <Link
+            href="/"
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
+              pathname === "/"
+                ? "bg-white/15 text-white font-bold shadow-sm"
+                : "text-titanium-300 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <LayoutDashboard className="w-3.5 h-3.5 text-cyber-cyan" />
+            <span>Dashboard</span>
+          </Link>
+
+          <Link
+            href="/map"
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
+              pathname === "/map"
+                ? "bg-white/15 text-white font-bold shadow-sm"
+                : "text-titanium-300 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <Navigation className="w-3.5 h-3.5 text-cyber-emerald" />
+            <span>Live Map</span>
+          </Link>
+
+          <Link
+            href="/sim"
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
+              pathname === "/sim"
+                ? "bg-white/15 text-white font-bold shadow-sm"
+                : "text-titanium-300 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <Activity className="w-3.5 h-3.5 text-cyber-cyan" />
+            <span>Simulation</span>
+          </Link>
+
+          <Link
+            href="/eval"
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${
+              pathname === "/eval"
+                ? "bg-white/15 text-white font-bold shadow-sm"
+                : "text-titanium-300 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <BarChart3 className="w-3.5 h-3.5 text-cyber-amber" />
+            <span>Evaluation</span>
+          </Link>
+        </nav>
       </div>
 
       {/* Action Controls */}
@@ -165,6 +222,33 @@ export default function Navbar({
                   >
                     <X className="w-5 h-5" />
                   </button>
+                </div>
+
+                {/* Mobile Navigation Links */}
+                <div className="py-1.5 space-y-1 md:hidden">
+                  <div className="px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-titanium-400 font-semibold">
+                    Navigation
+                  </div>
+                  <Link
+                    href="/"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="w-full min-h-[44px] px-3 py-2 rounded-xl text-left text-xs font-medium text-white hover:bg-white/10 flex items-center gap-3 transition-colors"
+                  >
+                    <span className="w-5 flex items-center justify-center shrink-0">
+                      <LayoutDashboard className="w-4 h-4 text-cyber-cyan" />
+                    </span>
+                    <span>Safety Overview Dashboard</span>
+                  </Link>
+                  <Link
+                    href="/map"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="w-full min-h-[44px] px-3 py-2 rounded-xl text-left text-xs font-medium text-white hover:bg-white/10 flex items-center gap-3 transition-colors"
+                  >
+                    <span className="w-5 flex items-center justify-center shrink-0">
+                      <Navigation className="w-4 h-4 text-cyber-emerald" />
+                    </span>
+                    <span>Live Interactive Map</span>
+                  </Link>
                 </div>
 
                 {/* Group 1: Tools (B3 & C1) */}

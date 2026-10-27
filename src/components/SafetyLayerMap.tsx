@@ -151,34 +151,34 @@ export default function SafetyLayerMap({
   };
 
   // Auto-fit bounds to selected route
-  const fitRouteBounds = (map: any, maplibregl: any) => {
-    if (!map || !selectedRoute || !selectedRoute.polyline || selectedRoute.polyline.length === 0) return;
+  const fitRouteBounds = (map: any, maplibregl: any, routeToFit = selectedRoute) => {
+    if (!map || !routeToFit || !routeToFit.polyline || routeToFit.polyline.length === 0) return;
     try {
       const bounds = new maplibregl.LngLatBounds();
-      selectedRoute.polyline.forEach(([lat, lng]) => {
+      routeToFit.polyline.forEach(([lat, lng]: [number, number]) => {
         bounds.extend([lng, lat]);
       });
 
       const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
       map.fitBounds(bounds, {
         padding: isMobile
-          ? { top: 90, bottom: 200, left: 30, right: 30 }
-          : { top: 80, bottom: 80, left: 380, right: 80 },
-        maxZoom: 16.5,
-        duration: 900,
+          ? { top: 90, bottom: 260, left: 24, right: 24 }
+          : { top: 90, bottom: 90, left: 420, right: 420 },
+        maxZoom: 16,
+        duration: 800,
       });
     } catch (err) {
       console.warn("fitBounds error:", err);
     }
   };
 
-  // Fit bounds when selected route changes
+  // Fit bounds when selected route or route list changes
   useEffect(() => {
-    if (!mapLibreInstanceRef.current) return;
+    if (!mapLibreInstanceRef.current || !selectedRoute) return;
     import("maplibre-gl").then((mod) => {
-      fitRouteBounds(mapLibreInstanceRef.current, mod.default);
+      fitRouteBounds(mapLibreInstanceRef.current, mod.default, selectedRoute);
     });
-  }, [selectedRoute?.id]);
+  }, [selectedRoute, routes]);
 
   // Update user GPS location dot and accuracy circle
   useEffect(() => {
