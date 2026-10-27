@@ -1,4 +1,4 @@
-# SafetyLayer (formerly SafeLayer)
+# SafetyLayer 
 
 **Know which route has fewer reported issues before you step out.**
 
