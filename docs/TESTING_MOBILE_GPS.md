@@ -2,7 +2,7 @@
 
 Modern mobile browsers (Chrome on Android, Safari on iOS) strictly enforce the W3C secure context requirement: `navigator.geolocation` only works on `localhost` or via **HTTPS**. If you open `http://<local-ip>:3000` on your mobile phone, the browser will block geolocation with an `insecure_context` error.
 
-To test SafeLayer's live GPS, accuracy circle, and reporting flow on a real smartphone, use one of the free HTTPS tunneling solutions below:
+To test SafetyLayer's live GPS, accuracy circle, and reporting flow on a real smartphone, use one of the free HTTPS tunneling solutions below:
 
 ---
 
@@ -55,4 +55,4 @@ Configure `next dev --experimental-https` to serve over local HTTPS.
 ---
 
 ## Privacy Note
-SafeLayer never stores your precise location on server page loads. Coordinates are held in browser memory only for route origin calculations and user-initiated reports.
+SafetyLayer never stores your precise location on server page loads. Coordinates are held in browser memory only for route origin calculations and user-initiated reports.

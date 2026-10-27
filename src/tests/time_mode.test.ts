@@ -94,3 +94,34 @@ test("Departure Time: Nocturnal departure increases caution score for unlit corr
   // Nighttime traversal along the unlit service road must produce higher risk than daytime
   assert.ok(nightScored[0].riskScore > dayScored[0].riskScore);
 });
+
+test("A2: Walk, Two-wheeler, and Vehicle yield distinct durations for the same route", () => {
+  const osrm = new (require("../lib/routing/provider").OsrmRoutingProvider)();
+  const origin = { lat: 28.6335, lng: 77.2205 };
+  const destination = { lat: 28.6248, lng: 77.2245 };
+
+  // Test fallback route durations across all 3 modes
+  const walkRoutes = osrm.createFallbackRoute(origin, destination, "walking");
+  const bikeRoutes = osrm.createFallbackRoute(origin, destination, "two_wheeler");
+  const driveRoutes = osrm.createFallbackRoute(origin, destination, "driving");
+
+  assert.strictEqual(walkRoutes.length, 1);
+  assert.strictEqual(bikeRoutes.length, 1);
+  assert.strictEqual(driveRoutes.length, 1);
+
+  // Walk should be slowest (~5 km/h), vehicle fastest (~28-30 km/h), two-wheeler in between (~22 km/h)
+  assert.ok(
+    walkRoutes[0].durationMinutes > bikeRoutes[0].durationMinutes,
+    `Walk (${walkRoutes[0].durationMinutes}m) should take longer than bike (${bikeRoutes[0].durationMinutes}m)`
+  );
+  assert.ok(
+    bikeRoutes[0].durationMinutes >= driveRoutes[0].durationMinutes,
+    `Bike (${bikeRoutes[0].durationMinutes}m) should take longer than or equal to drive (${driveRoutes[0].durationMinutes}m)`
+  );
+  assert.ok(
+    walkRoutes[0].durationMinutes > driveRoutes[0].durationMinutes,
+    `Walk (${walkRoutes[0].durationMinutes}m) should take longer than drive (${driveRoutes[0].durationMinutes}m)`
+  );
+  assert.ok(walkRoutes[0].name.includes("estimated"));
+});
+

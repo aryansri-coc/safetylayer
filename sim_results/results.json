@@ -1002,7 +1002,7 @@
       "ablations": [
         {
           "ablationId": "full",
-          "name": "Full SafeLayer (Modules A-E)",
+          "name": "Full SafetyLayer (Modules A-E)",
           "attackRejectionRate": 58,
           "sybilLeakagePct": 75,
           "coldStartAUC": 0.464,

@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import { RouteAlternative, TravelMode } from "@/types";
 import {
@@ -21,6 +19,7 @@ import {
   Sparkles,
   Zap,
 } from "lucide-react";
+import { computeGroupedHazardChips, GroupedHazardChip } from "@/lib/routing/issues";
 
 interface RouteDrawerProps {
   routes: RouteAlternative[];
@@ -33,15 +32,6 @@ interface RouteDrawerProps {
   isLoading?: boolean;
 }
 
-const CAUTION_EXPLANATIONS: Record<string, string> = {
-  lighting: "Inactive or missing streetlights reported along this stretch.",
-  road_condition: "Potholes, broken asphalt, or open work pits reported.",
-  footpath_missing: "No separated sidewalk; walking alongside vehicle traffic.",
-  isolated_stretch: "Quiet corridor with low footfall and few open stores.",
-  obstruction: "Debris, barricades, or material partially blocking the path.",
-  other: "Physical road hazard noted by community commuters.",
-};
-
 export default function RouteDrawer({
   routes,
   selectedRoute,
@@ -53,10 +43,10 @@ export default function RouteDrawer({
   isLoading,
 }: RouteDrawerProps) {
   const [isChangingTime, setIsChangingTime] = useState(false);
-  const [selectedCaution, setSelectedCaution] = useState<{ id: string; text: string } | null>(null);
+  const [selectedChip, setSelectedChip] = useState<GroupedHazardChip | null>(null);
   const [isMobileCollapsed, setIsMobileCollapsed] = useState(false);
 
-  // Travel modes: Walk, Two-wheeler, Vehicle (Plain words & icons)
+  // Travel modes: Walk, Two-wheeler, Vehicle (Plain words & icons, min 44px tap target)
   const modes: { id: TravelMode; label: string; icon: React.ReactNode }[] = [
     { id: "walking", label: "Walk", icon: <Footprints className="w-4 h-4" /> },
     { id: "two_wheeler", label: "Two-wheeler", icon: <Bike className="w-4 h-4" /> },
@@ -84,13 +74,14 @@ export default function RouteDrawer({
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-titanium-400">
+          <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-titanium-300">
             {routes.length} {routes.length === 1 ? "route" : "routes"}
           </span>
           <button
             onClick={() => setIsMobileCollapsed(!isMobileCollapsed)}
-            className="md:hidden p-1 text-titanium-400 hover:text-white"
-            title="Toggle panel"
+            className="md:hidden p-1 text-titanium-300 hover:text-white min-h-[36px] min-w-[36px] flex items-center justify-center"
+            title="Toggle route options panel"
+            aria-label="Toggle route options panel"
           >
             {isMobileCollapsed ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
@@ -100,7 +91,7 @@ export default function RouteDrawer({
       {!isMobileCollapsed && (
         <>
           {/* Travel Mode Selector (Min 44px tap targets) */}
-          <div className="grid grid-cols-3 gap-1.5 my-3 p-1 rounded-xl bg-obsidian-900 border border-white/10 shrink-0">
+          <div className="grid grid-cols-3 gap-1.5 my-2.5 p-1 rounded-xl bg-obsidian-900 border border-white/10 shrink-0">
             {modes.map((m) => {
               const isActive = travelMode === m.id || (m.id === "walking" && travelMode === "night_commute");
               return (
@@ -110,8 +101,9 @@ export default function RouteDrawer({
                   className={`min-h-[44px] flex items-center justify-center gap-2 py-2 px-2 rounded-lg text-xs font-semibold transition-all ${
                     isActive
                       ? "bg-white text-obsidian-950 font-bold shadow-md shadow-white/10"
-                      : "text-titanium-400 hover:text-white hover:bg-obsidian-800"
+                      : "text-titanium-300 hover:text-white hover:bg-obsidian-800"
                   }`}
+                  aria-pressed={isActive}
                 >
                   {m.icon}
                   <span>{m.label}</span>
@@ -121,9 +113,9 @@ export default function RouteDrawer({
           </div>
 
           {/* Departure Time Control: Defaults to "Leave now" with optional "Change time" */}
-          <div className="mb-3 p-3 rounded-xl bg-obsidian-900/90 border border-white/10 space-y-2 shrink-0">
+          <div className="mb-2.5 p-2.5 rounded-xl bg-obsidian-900/90 border border-white/10 space-y-2 shrink-0">
             <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-1.5 text-titanium-300">
+              <div className="flex items-center gap-1.5 text-titanium-200">
                 <Clock className="w-4 h-4 text-cyber-cyan" />
                 <span className="font-medium">
                   {isLeaveNow ? "Leave now" : `Depart at ${formatHour(queryHour)}`}
@@ -137,7 +129,7 @@ export default function RouteDrawer({
 
               <button
                 onClick={() => setIsChangingTime(!isChangingTime)}
-                className="text-xs text-cyber-cyan hover:underline font-medium min-h-[32px] px-2 flex items-center"
+                className="text-xs text-cyber-cyan hover:underline font-medium min-h-[44px] px-2 flex items-center"
               >
                 {isChangingTime ? "Done" : "Change time"}
               </button>
@@ -152,7 +144,7 @@ export default function RouteDrawer({
                       onChangeHour(new Date().getHours());
                       setIsChangingTime(false);
                     }}
-                    className="text-[11px] text-titanium-400 hover:text-white underline"
+                    className="text-[11px] text-titanium-300 hover:text-white underline min-h-[32px] flex items-center"
                   >
                     Reset to Now
                   </button>
@@ -170,7 +162,7 @@ export default function RouteDrawer({
                   className="w-full cursor-pointer h-2 bg-obsidian-700 rounded-lg appearance-none accent-white focus:outline-none"
                 />
 
-                <div className="flex justify-between text-[10px] font-mono text-titanium-500">
+                <div className="flex justify-between text-[10px] font-mono text-titanium-400">
                   <span>Midnight</span>
                   <span>Noon</span>
                   <span>Night</span>
@@ -182,15 +174,15 @@ export default function RouteDrawer({
           {/* Route Cards Stream */}
           <div className="flex-1 overflow-y-auto space-y-2.5 pr-1 font-sans">
             {isLoading ? (
-              <div className="p-8 text-center text-xs text-titanium-400 flex flex-col items-center justify-center gap-2">
+              <div className="p-8 text-center text-xs text-titanium-300 flex flex-col items-center justify-center gap-2">
                 <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 <span>Finding routes and reported road cautions...</span>
               </div>
             ) : routes.length === 0 ? (
-              <div className="p-6 text-center text-xs text-titanium-400 bg-obsidian-900/40 rounded-xl border border-white/5">
+              <div className="p-6 text-center text-xs text-titanium-300 bg-obsidian-900/40 rounded-xl border border-white/5">
                 <p>No routes found between these locations.</p>
-                <p className="text-[11px] text-titanium-500 mt-1">
-                  Try searching a different destination or pick a point on the map.
+                <p className="text-[11px] text-titanium-400 mt-1">
+                  Try searching another destination or tap on the map.
                 </p>
               </div>
             ) : (
@@ -200,10 +192,10 @@ export default function RouteDrawer({
                 const issuesCount = route.reportedIssuesCount ?? route.hazardsEncountered.length;
                 const isNoData = route.dataSource === "no_data_yet" || route.coveragePercentage === 0;
 
-                // Color and Icon indicators (Never rely on color alone!)
-                let issueBadgeText = `${issuesCount} reported issue${issuesCount === 1 ? "" : "s"}`;
+                // Color and Icon indicators per C2 (Never rely on color alone!)
+                let issueBadgeText = "Fewer reported issues";
                 let issueBadgeClass = "bg-cyber-emerald/15 text-cyber-emerald border-cyber-emerald/30";
-                let IssueIcon = CheckCircle2;
+                let IssueIcon = ShieldCheck;
 
                 if (isNoData) {
                   issueBadgeText = "No data yet";
@@ -226,10 +218,13 @@ export default function RouteDrawer({
                 // Data source badge in plain words
                 const dataSourceLabel =
                   route.dataSource === "demo_data"
-                    ? "Demo data"
+                    ? "Demo data covers this corridor"
                     : isNoData
                     ? "No data yet"
-                    : "Live data";
+                    : "Live community data";
+
+                // Grouped chips per B4
+                const groupedChips = computeGroupedHazardChips(route.hazardsEncountered);
 
                 return (
                   <div
@@ -241,37 +236,40 @@ export default function RouteDrawer({
                         : "metallic-panel-interactive border-white/10 hover:border-white/20"
                     }`}
                   >
-                    {/* Header: Route Name & Badges */}
+                    {/* Header: Route Name & Recommended Badge with Disclaimer */}
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <div className="font-semibold text-sm text-white leading-snug">
                         {route.name}
                       </div>
                       {isRec && (
-                        <span className="shrink-0 text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-cyber-emerald text-obsidian-950 flex items-center gap-1 shadow-sm">
-                          <CheckCircle2 className="w-3 h-3" />
-                          Recommended
-                        </span>
+                        <div className="flex flex-col items-end gap-0.5">
+                          <span className="shrink-0 text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-cyber-emerald text-obsidian-950 flex items-center gap-1 shadow-sm">
+                            <CheckCircle2 className="w-3 h-3" />
+                            Recommended
+                          </span>
+                          <span className="text-[9px] text-titanium-400">Not a guarantee</span>
+                        </div>
                       )}
                     </div>
 
-                    {/* Simple Readout: Time, Distance, Issue Count */}
+                    {/* Simple Readout: Time, Distance, Issue Level with Icon */}
                     <div className="grid grid-cols-3 gap-2 py-2 my-2 rounded-xl bg-obsidian-950/80 border border-white/5 text-center">
                       <div>
-                        <span className="text-[10px] uppercase font-mono tracking-wider text-titanium-500 block">
+                        <span className="text-[10px] uppercase font-mono tracking-wider text-titanium-400 block">
                           Time
                         </span>
                         <span className="text-sm font-bold text-white">{route.durationMinutes} min</span>
                       </div>
                       <div className="border-x border-white/5">
-                        <span className="text-[10px] uppercase font-mono tracking-wider text-titanium-500 block">
+                        <span className="text-[10px] uppercase font-mono tracking-wider text-titanium-400 block">
                           Distance
                         </span>
-                        <span className="text-sm font-medium text-titanium-300">
+                        <span className="text-sm font-medium text-titanium-200">
                           {route.distanceKm} km
                         </span>
                       </div>
                       <div>
-                        <span className="text-[10px] uppercase font-mono tracking-wider text-titanium-500 block">
+                        <span className="text-[10px] uppercase font-mono tracking-wider text-titanium-400 block">
                           Issues
                         </span>
                         <span className="text-xs font-semibold flex items-center justify-center gap-1 text-white">
@@ -282,7 +280,7 @@ export default function RouteDrawer({
                     </div>
 
                     {/* Honest Comparison & Trade-off Line */}
-                    <div className="text-xs text-titanium-300 bg-obsidian-900/60 p-2.5 rounded-xl border border-white/5 my-2 flex items-start gap-2">
+                    <div className="text-xs text-titanium-200 bg-obsidian-900/60 p-2.5 rounded-xl border border-white/5 my-2 flex items-start gap-2">
                       <span className="px-2 py-0.5 rounded text-[10px] font-medium border shrink-0 bg-white/5 text-titanium-300 border-white/10">
                         {dataSourceLabel}
                       </span>
@@ -293,60 +291,59 @@ export default function RouteDrawer({
                       </span>
                     </div>
 
-                    {/* What to Watch For (Tappable plain language chips) */}
-                    {route.hazardsEncountered.length > 0 ? (
+                    {/* What to Watch For: Grouped Chips per B4 */}
+                    {groupedChips.length > 0 ? (
                       <div className="space-y-1.5 pt-1">
-                        <span className="text-[11px] font-medium text-titanium-400 block">
+                        <span className="text-[11px] font-medium text-titanium-300 block">
                           What to watch for:
                         </span>
                         <div className="flex flex-wrap gap-1.5">
-                          {route.hazardsEncountered.map((h) => {
-                            const isSelectedCaution = selectedCaution?.id === h.id;
-                            const cautionTitle = h.issue.replace("_", " ");
+                          {groupedChips.map((chip) => {
+                            const isSelectedChip = selectedChip?.issue === chip.issue;
                             return (
                               <button
-                                key={h.id}
+                                key={chip.issue}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  if (isSelectedCaution) {
-                                    setSelectedCaution(null);
+                                  if (isSelectedChip) {
+                                    setSelectedChip(null);
                                   } else {
-                                    setSelectedCaution({
-                                      id: h.id,
-                                      text:
-                                        CAUTION_EXPLANATIONS[h.issue] ||
-                                        "Physical road issue noted by community commuters.",
-                                    });
+                                    setSelectedChip(chip);
                                   }
                                 }}
-                                className={`text-[11px] px-2.5 py-1 rounded-lg border flex items-center gap-1.5 transition-all ${
-                                  isSelectedCaution
-                                    ? "bg-white/20 border-white text-white font-medium"
-                                    : "bg-obsidian-900 border-white/10 text-titanium-300 hover:text-white"
+                                className={`text-[11px] px-2.5 py-1 rounded-lg border flex items-center gap-1.5 transition-all min-h-[32px] ${
+                                  isSelectedChip
+                                    ? "bg-white/20 border-white text-white font-medium shadow-md"
+                                    : "bg-obsidian-900 border-white/10 text-titanium-200 hover:text-white hover:bg-obsidian-800"
                                 }`}
+                                title={`${chip.label} (${chip.severityLabel})`}
                               >
-                                <span
-                                  className={`w-1.5 h-1.5 rounded-full ${
-                                    h.severity >= 4 ? "bg-cyber-crimson" : "bg-cyber-amber"
-                                  }`}
-                                />
-                                <span className="capitalize">{cautionTitle}</span>
+                                <span className="font-mono text-xs">{chip.severityIcon}</span>
+                                <span className="capitalize font-medium">{chip.label}</span>
+                                <span className="text-[10px] text-titanium-400">({chip.severityLabel})</span>
                               </button>
                             );
                           })}
                         </div>
 
-                        {/* Tapped Caution One-line Explanation */}
-                        {selectedCaution && (
-                          <div className="p-2 rounded-lg bg-obsidian-950 text-xs text-white border border-white/15 animate-fade-in flex items-start gap-1.5 mt-1">
-                            <Info className="w-3.5 h-3.5 text-cyber-cyan shrink-0 mt-0.5" />
-                            <span>{selectedCaution.text}</span>
+                        {/* Tapped Grouped Caution Explanation */}
+                        {selectedChip && (
+                          <div className="p-2.5 rounded-xl bg-obsidian-950 text-xs text-white border border-white/15 animate-fade-in flex items-start gap-2 mt-1.5">
+                            <Info className="w-4 h-4 text-cyber-cyan shrink-0 mt-0.5" />
+                            <div>
+                              <div className="font-semibold text-cyber-cyan capitalize">
+                                {selectedChip.label} • {selectedChip.severityLabel}
+                              </div>
+                              <p className="text-[11px] text-titanium-200 mt-0.5 leading-relaxed">
+                                {selectedChip.explanation}
+                              </p>
+                            </div>
                           </div>
                         )}
                       </div>
                     ) : isNoData ? (
-                      <div className="text-[11px] text-titanium-400 flex items-center gap-1.5 pt-1">
-                        <Info className="w-3.5 h-3.5 text-titanium-500" />
+                      <div className="text-[11px] text-titanium-300 flex items-center gap-1.5 pt-1">
+                        <HelpCircle className="w-3.5 h-3.5 text-titanium-400" />
                         <span>No reports here yet. Be the first to report.</span>
                       </div>
                     ) : (
@@ -362,7 +359,7 @@ export default function RouteDrawer({
           </div>
 
           {/* Transparency Disclaimer Footer */}
-          <div className="mt-2.5 pt-2 border-t border-white/10 text-[11px] text-titanium-500 leading-tight shrink-0 flex items-center justify-between">
+          <div className="mt-2 pt-2 border-t border-white/10 text-[11px] text-titanium-400 leading-tight shrink-0 flex items-center justify-between">
             <span>Information, not a guarantee.</span>
             <span>Community reports & baseline.</span>
           </div>

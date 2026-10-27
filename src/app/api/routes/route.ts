@@ -19,12 +19,13 @@ export async function POST(req: NextRequest) {
     const segments = await repo.getRoadSegments();
     const reports = await repo.getHazardReports();
 
-    // Check if origin and destination are within Central Delhi demo area
-    const isCentralDelhi =
-      Math.abs(origin.lat - 28.63) < 0.04 &&
-      Math.abs(origin.lng - 77.22) < 0.04 &&
-      Math.abs(destination.lat - 28.63) < 0.04 &&
-      Math.abs(destination.lng - 77.22) < 0.04;
+    // Check if request is explicitly for the seeded Central Delhi demo walkthrough corridor:
+    // (Origin = Connaught Place Outer Circle, Destination = Tolstoy Marg Junction)
+    const isConnaughtPlaceTolstoyDemo =
+      Math.abs(origin.lat - 28.6335) < 0.005 &&
+      Math.abs(origin.lng - 77.2205) < 0.005 &&
+      Math.abs(destination.lat - 28.6248) < 0.005 &&
+      Math.abs(destination.lng - 77.2245) < 0.005;
 
     let candidateRoutes: {
       id: string;
@@ -34,13 +35,20 @@ export async function POST(req: NextRequest) {
       polyline: [number, number][];
     }[] = [];
 
-    // For Central Delhi demo area or when demo mode requested, provide the seeded multi-corridor paths
-    if (isCentralDelhi || isDemoMode) {
+    // For seeded Central Delhi demo corridor (when in demo mode or routing the demo corridor)
+    if (isDemoMode || isConnaughtPlaceTolstoyDemo) {
+      const isWalk = travelMode === "walking" || travelMode === "night_commute";
+      const isTwoWheeler = travelMode === "two_wheeler";
+
+      // Sensible average speeds:
+      // Walk (~5 km/h): 2.1 km = 25 min, 2.5 km = 30 min, 2.8 km = 34 min
+      // Two-wheeler (~21-23 km/h city): 2.1 km = 6 min, 2.5 km = 7 min, 2.8 km = 8 min
+      // Vehicle/Driving (~25-28 km/h city): 2.1 km = 5 min, 2.5 km = 6 min, 2.8 km = 7 min
       candidateRoutes = [
         {
           id: "route_direct_service",
           name: "Via Barakhamba Service Lane & KG Underpass",
-          durationMinutes: travelMode === "driving" ? 8 : travelMode === "two_wheeler" ? 10 : 14,
+          durationMinutes: isWalk ? 25 : isTwoWheeler ? 6 : 5,
           distanceKm: 2.1,
           polyline: [
             [origin.lat, origin.lng],
@@ -54,7 +62,7 @@ export async function POST(req: NextRequest) {
         {
           id: "route_commercial_lit",
           name: "Via Janpath & Tolstoy Marg (Commercial Corridor)",
-          durationMinutes: travelMode === "driving" ? 10 : travelMode === "two_wheeler" ? 12 : 17,
+          durationMinutes: isWalk ? 30 : isTwoWheeler ? 7 : 6,
           distanceKm: 2.5,
           polyline: [
             [origin.lat, origin.lng],
@@ -69,7 +77,7 @@ export async function POST(req: NextRequest) {
         {
           id: "route_outer_radial",
           name: "Via Outer Circle Eastern Radial",
-          durationMinutes: travelMode === "driving" ? 11 : travelMode === "two_wheeler" ? 13 : 19,
+          durationMinutes: isWalk ? 34 : isTwoWheeler ? 8 : 7,
           distanceKm: 2.8,
           polyline: [
             [origin.lat, origin.lng],
@@ -129,7 +137,7 @@ export async function POST(req: NextRequest) {
         timestamp: simulatedDate.toISOString(),
       },
       routes: reRankedRoutes,
-      disclaimer: "Information, not a guarantee. SafeLayer surfaces reported physical road issues.",
+      disclaimer: "Information, not a guarantee. SafetyLayer surfaces reported physical road issues.",
     });
   } catch (err: any) {
     console.error("Routing error:", err);

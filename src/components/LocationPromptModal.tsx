@@ -93,7 +93,7 @@ export default function LocationPromptModal({
           ) : (
             <div className="space-y-3">
               <p className="text-titanium-200">
-                SafeLayer uses your current location to:
+                SafetyLayer uses your current location to:
               </p>
               <ul className="space-y-2 text-titanium-300">
                 <li className="flex items-start gap-2">

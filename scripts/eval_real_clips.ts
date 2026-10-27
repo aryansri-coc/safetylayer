@@ -24,7 +24,7 @@ export async function evaluateRealClips() {
     console.log("   1. Place 10-15s mp4/wav files in scripts/real_clips/media/");
     console.log("   2. Label rows in scripts/real_clips/dataset_template.csv");
     console.log("   3. Run 'npm run eval:real'\n");
-    console.log("   Honesty Rule: SafeLayer never fabricates real-world field metrics.");
+    console.log("   Honesty Rule: SafetyLayer never fabricates real-world field metrics.");
     console.log("=================================================");
     return {
       totalClips: 0,

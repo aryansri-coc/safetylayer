@@ -6,7 +6,7 @@ async function runGemmaSmoke() {
   const modelId = process.env.GEMMA_MODEL_ID || (provider === "ollama" ? "gemma4:12b" : "gemma-4-12b-it");
 
   console.log("=================================================");
-  console.log("     SAFELAYER GEMMA 4 SMOKE VERIFICATION        ");
+  console.log("    SAFETYLAYER GEMMA 4 SMOKE VERIFICATION       ");
   console.log("=================================================");
   console.log(`Configured Provider:  ${provider.toUpperCase()}`);
   console.log(`Configured Model ID:  ${modelId}`);

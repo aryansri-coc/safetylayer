@@ -1,6 +1,7 @@
 import { HazardReport, RoadSegment, RouteAlternative, TravelMode } from "@/types";
 import { RiskModel } from "../risk/model";
 import { snapPolylineToSegments } from "./snapping";
+import { getDistinctRouteHazards, selectRecommendedRoute } from "./issues";
 
 export class RoutingEngine {
   /**
@@ -114,15 +115,11 @@ export class RoutingEngine {
       }
 
       let totalWeightedRisk = 0;
-      const encounteredHazards: HazardReport[] = [];
       const encounteredPriors = matchedSegments.map((s) => s.baselinePrior);
       const reasons: string[] = [];
 
       for (const seg of matchedSegments) {
         const segRisk = RiskModel.computeSegmentRisk(seg.id, seg.baselinePrior, allReports, queryTime);
-        const segReports = allReports.filter(
-          (r) => r.segmentId === seg.id && r.status === "published"
-        );
 
         // Apply mode and nocturnal weighting
         let multiplier = 1.0;
@@ -138,12 +135,6 @@ export class RoutingEngine {
 
         totalWeightedRisk += segRisk.compositeRiskScore * multiplier;
 
-        for (const rep of segReports) {
-          if (!encounteredHazards.some((h) => h.id === rep.id)) {
-            encounteredHazards.push(rep);
-          }
-        }
-
         if (segRisk.compositeRiskScore > 0.45 && segRisk.dominantHazard) {
           const reasonText = `${seg.name}: ${segRisk.dominantHazard.replace("_", " ")} reported (${Math.round(segRisk.compositeRiskScore * 100)}% caution)`;
           if (!reasons.includes(reasonText)) {
@@ -151,6 +142,9 @@ export class RoutingEngine {
           }
         }
       }
+
+      // Single source of truth for distinct route issues
+      const encounteredHazards = getDistinctRouteHazards(matchedSegments, allReports);
 
       const segmentCount = Math.max(1, matchedSegments.length);
       const averageSegmentRisk = totalWeightedRisk / segmentCount;
@@ -190,43 +184,18 @@ export class RoutingEngine {
       };
     });
 
-    // Determine baseline fastest route vs lowest reported risk route
-    const fastest = [...scoredAlternatives].sort((a, b) => a.durationMinutes - b.durationMinutes)[0];
-    const lowestRisk = [...scoredAlternatives].sort((a, b) => a.riskScore - b.riskScore)[0];
+    // Single source of truth recommendation selection rule
+    const recommendation = selectRecommendedRoute(scoredAlternatives);
 
-    // Recommend the route with fewer reported issues if substantial risk reduction
-    const recommendedId =
-      lowestRisk.riskScore < fastest.riskScore * 0.85 ? lowestRisk.id : fastest.id;
-
-    return scoredAlternatives.map((route) => {
-      const isRec = route.id === recommendedId;
-      const timeDiff = route.durationMinutes - fastest.durationMinutes;
-      const issueDiff = fastest.hazardsEncountered.length - route.hazardsEncountered.length;
-      const riskReduction =
-        fastest.riskScore > 0
-          ? Math.round(((fastest.riskScore - route.riskScore) / fastest.riskScore) * 100)
-          : 0;
-
-      let tradeoffSummary = "";
-      if (route.coveragePercentage === 0) {
-        tradeoffSummary = "No reports here yet. Be the first to report.";
-      } else if (route.id === fastest.id && route.id === lowestRisk.id) {
-        tradeoffSummary = "Fastest route with fewest reported issues.";
-      } else if (route.id === fastest.id) {
-        tradeoffSummary = `Fastest route (${route.durationMinutes} min), passes ${route.hazardsEncountered.length} reported issues.`;
-      } else if (timeDiff > 0 && issueDiff > 0) {
-        tradeoffSummary = `+${timeDiff} min, ${issueDiff} fewer reported issues.`;
-      } else if (timeDiff > 0 && riskReduction > 0) {
-        tradeoffSummary = `+${timeDiff} min, ${riskReduction}% fewer reported issues.`;
-      } else {
-        tradeoffSummary = `Alternative route with ${route.hazardsEncountered.length} reported issues.`;
-      }
-
-      return {
-        ...route,
-        isRecommended: isRec,
-        tradeoffSummary,
-      };
-    });
+    return scoredAlternatives.map((route) => ({
+      ...route,
+      isRecommended: route.id === recommendation.recommendedId,
+      tradeoffSummary:
+        recommendation.tradeoffSummaries[route.id] ||
+        (route.coveragePercentage === 0
+          ? "No reports here yet. Be the first to report."
+          : `Alternative route with ${route.reportedIssuesCount} reported issues.`),
+    }));
   }
 }
+

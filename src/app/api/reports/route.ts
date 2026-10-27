@@ -46,7 +46,9 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Identity and Rate Limiting
-    const authHeader = req.headers.get("x-safelayer-auth") || req.headers.get("authorization");
+    const authHeader =
+      req.headers.get("x-safetylayer-auth") ||
+      req.headers.get("authorization");
     const clientIp = req.headers.get("x-forwarded-for") || "client_default";
     const clientId = authHeader ? `auth_${authHeader.slice(-12)}` : `ip_${clientIp}`;
 

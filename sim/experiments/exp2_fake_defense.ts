@@ -92,7 +92,7 @@ export function runExp2FakeDefense(
       80
     );
 
-    // Decision logic using SafeLayer production rules
+    // Decision logic using SafetyLayer production rules
     let rejected = false;
     let rejectReason = "";
 

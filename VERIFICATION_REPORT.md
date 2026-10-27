@@ -1,6 +1,6 @@
-# SafeLayer Verification & Honesty Audit Report
+# SafetyLayer Verification & Honesty Audit Report
 **Date:** 2026-10-27  
-**Repository:** SafeLayer (Next.js 14, TypeScript, MapLibre 3D, Google Maps Layer)  
+**Repository:** SafetyLayer (formerly SafeLayer; Next.js 14, TypeScript, MapLibre 3D, Google Maps Layer)  
 **Evaluator:** Senior Full-Stack & ML Systems Engineer (DeepMind Antigravity)  
 
 ---
@@ -14,7 +14,7 @@ Every item in this audit is backed by actual command outputs, code references, a
 | **0.1** | Gemma Provider Runtime Flag & Badge | **VERIFIED** | Active provider badge (`[PROVIDER: MOCK]`) displayed in UI, `/eval`, `/sim`, and API responses |
 | **0.2** | Eval Page Honesty Relabeling | **VERIFIED** | All metrics relabeled as "synthetic benchmark (mock provider)". Empty "real clips" section added with schema |
 | **0.3** | Scout Scoring Anti-Volume Fix | **VERIFIED** | 0 points on submission; vesting strictly depends on corroboration. 100 pt daily cap. Unit tested |
-| **0.4** | Data Source Transparency Badges | **VERIFIED** | `SafeLayerMap` HUD displays `DATA: DEMO SEEDED (CENTRAL DELHI)`; route tradeoff callout tagged |
+| **0.4** | Data Source Transparency Badges | **VERIFIED** | `SafetyLayerMap` HUD displays `DATA: DEMO SEEDED (CENTRAL DELHI)`; route tradeoff callout tagged |
 | **0.5** | Privacy Claims Audit | **VERIFIED** | `PRIVACY_AUDIT.md` created; 20-30m location fuzzing & zero media retention verified by unit tests |
 | **0.6** | API Hardening & Token Identity | **VERIFIED** | Server-side identity derivation, 10 req/min rate limit, 3 MB body limit, zero API keys in repo |
 | **1-4** | Monte Carlo Simulation Harness | **VERIFIED** | 30 seeds executed across 8 experiments in 3.11s; raw JSON/CSV written to `/sim_results/` |
@@ -57,7 +57,7 @@ Every item in this audit is backed by actual command outputs, code references, a
 
 ### 2.4 Data Source Transparency
 - **Problem Investigated:** Unclear whether routes and baselines came from live Google Maps APIs or seeded demo data.
-- **Code Changed (`SafeLayerMap.tsx` & `RouteDrawer.tsx`):**
+- **Code Changed (`SafetyLayerMap.tsx` & `RouteDrawer.tsx`):**
   - Map HUD pill displays: `DATA: DEMO SEEDED` and `CORRIDOR: CENTRAL DELHI`.
   - Route tradeoff callouts display `DEMO DATA` badge alongside dynamic calculation.
   - Added `/api/status` exposing `maps.isDemo`, `maps.provider`, and `gemma.provider`.
@@ -90,7 +90,7 @@ Ran CLI command: `npx tsx sim/runner.ts --seeds 30 --config sim/configs/default.
 
 ```
 =================================================
- SafeLayer Monte Carlo Simulation Harness        
+ SafetyLayer Monte Carlo Simulation Harness        
 =================================================
  Config:    C:\Users\ARYAN\Desktop\HACKOCTOBER\sim\configs\default.json
  Seeds:     30

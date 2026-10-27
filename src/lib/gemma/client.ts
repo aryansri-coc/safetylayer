@@ -61,7 +61,7 @@ export function validateModelId(provider: "mock" | "ollama" | "hosted", modelId:
   return { valid: false, modalities: ["text"] };
 }
 
-export const GEMMA_SYSTEM_PROMPT = `You are Gemma 4 Multimodal Hazard Intelligence for SafeLayer, an ethical civic road-safety system.
+export const GEMMA_SYSTEM_PROMPT = `You are Gemma 4 Multimodal Hazard Intelligence for SafetyLayer (formerly SafeLayer), an ethical civic road-safety system.
 Your job is to analyze multimodal road reports (video keyframes, audio recordings, or text claims in English, Hindi, or Hinglish) along with GPS metadata, and extract structured hazard data.
 
 TAXONOMY OF ALLOWED ISSUES:
@@ -437,7 +437,7 @@ export function logGemmaStartup(): void {
   const client = getGemmaClient();
   const meta = client.getMetadata();
   console.log("=================================================");
-  console.log(" [SafeLayer] ACTIVE GEMMA PROVIDER CONFIGURATION ");
+  console.log(" [SafetyLayer] ACTIVE GEMMA PROVIDER CONFIGURATION ");
   console.log("=================================================");
   console.log(` Provider:        ${meta.provider.toUpperCase()}`);
   console.log(` Model ID:        ${meta.modelId}`);

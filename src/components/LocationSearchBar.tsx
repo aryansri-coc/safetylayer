@@ -18,11 +18,12 @@ interface LocationSearchBarProps {
   onSelectOrigin: (loc: SelectedLocation) => void;
   onSelectDestination: (loc: SelectedLocation) => void;
   onSwapLocations: () => void;
+  onGetRoutes?: () => void;
   mapCenter?: { lat: number; lng: number };
   onClearDestination?: () => void;
 }
 
-const RECENT_SEARCHES_KEY = "safelayer_recent_searches";
+const RECENT_SEARCHES_KEY = "safetylayer_recent_searches";
 
 export default function LocationSearchBar({
   origin,
@@ -30,10 +31,10 @@ export default function LocationSearchBar({
   onSelectOrigin,
   onSelectDestination,
   onSwapLocations,
+  onGetRoutes,
   mapCenter = { lat: 28.6315, lng: 77.2167 },
   onClearDestination,
 }: LocationSearchBarProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
   const [activeField, setActiveField] = useState<"origin" | "destination">("destination");
   const [destinationInput, setDestinationInput] = useState(destination?.name || "");
   const [originInput, setOriginInput] = useState(origin?.name || "Your location");
@@ -188,86 +189,99 @@ export default function LocationSearchBar({
   };
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-lg z-30 font-sans">
+    <div ref={containerRef} className="relative w-full max-w-lg z-30 font-sans select-none">
       {/* Search Bar Input Container */}
-      <div className="metallic-panel rounded-2xl border border-white/15 p-2.5 shadow-2xl backdrop-blur-xl">
-        {/* Destination Field (Primary) */}
-        <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-obsidian-900/90 border border-white/10 focus-within:border-white/30 transition-all">
-          <Search className="w-4 h-4 text-cyber-cyan shrink-0" />
-          <input
-            id="destination-search-input"
-            type="text"
-            value={destinationInput}
-            onFocus={() => {
-              setActiveField("destination");
-              if (!destinationInput && recentSearches.length > 0) {
-                // Show recents
-              }
-            }}
-            onChange={(e) => handleQueryChange(e.target.value, "destination")}
-            placeholder="Where to? (e.g. Connaught Place, Janpath)"
-            className="w-full bg-transparent text-sm text-white placeholder:text-titanium-500 focus:outline-none font-medium"
-          />
-          {isLoading && (
-            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin shrink-0" />
-          )}
-          {destinationInput && (
-            <button
-              onClick={handleClearDestination}
-              className="p-1 rounded-full text-titanium-400 hover:text-white hover:bg-obsidian-800"
-              title="Clear destination"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          )}
+      <div className="bg-obsidian-950/95 rounded-2xl border border-white/20 p-2.5 sm:p-3 shadow-2xl backdrop-blur-2xl space-y-2">
+        {/* Origin Field ("From" - always visible per A3 & B6) */}
+        <div className="flex items-center gap-2">
+          <div className="flex-1 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-obsidian-900 border border-white/10 focus-within:border-white/30 transition-all min-h-[44px]">
+            <Navigation className="w-4 h-4 text-cyber-emerald shrink-0" />
+            <div className="min-w-0 flex-1">
+              <span className="text-[9px] uppercase font-mono tracking-wider text-titanium-400 block -mb-0.5">
+                From
+              </span>
+              <input
+                id="origin-search-input"
+                type="text"
+                value={originInput}
+                onFocus={() => setActiveField("origin")}
+                onChange={(e) => handleQueryChange(e.target.value, "origin")}
+                placeholder="Starting location (Default: Your location)"
+                aria-label="Starting location"
+                className="w-full bg-transparent text-xs text-white placeholder:text-titanium-400 focus:outline-none font-medium truncate"
+              />
+            </div>
+          </div>
+
+          {/* Swap Button (Min 44px tap target per B6) */}
           <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className={`px-2 py-1 rounded-lg text-xs font-mono font-medium border transition-all ${
-              isExpanded
-                ? "bg-white/15 border-white/30 text-white"
-                : "bg-obsidian-800 border-white/10 text-titanium-400 hover:text-white"
-            }`}
-            title="Toggle route origin & destination options"
+            onClick={onSwapLocations}
+            className="min-h-[44px] min-w-[44px] p-2.5 rounded-xl bg-obsidian-900 hover:bg-obsidian-800 border border-white/10 text-titanium-200 hover:text-white transition-all shadow-md flex items-center justify-center shrink-0"
+            title="Swap start and destination locations"
+            aria-label="Swap start and destination locations"
           >
-            {isExpanded ? "Close" : "Route"}
+            <ArrowUpDown className="w-4 h-4 text-cyber-cyan" />
           </button>
         </div>
 
-        {/* Expandable Route Origin & Destination Controls */}
-        {isExpanded && (
-          <div className="mt-2.5 pt-2.5 border-t border-white/10 space-y-2 animate-fade-in text-xs">
-            {/* Origin Field */}
-            <div className="flex items-center gap-2">
-              <div className="flex-1 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-obsidian-900/70 border border-white/10 focus-within:border-white/30">
-                <Navigation className="w-3.5 h-3.5 text-cyber-emerald shrink-0" />
-                <input
-                  type="text"
-                  value={originInput}
-                  onFocus={() => setActiveField("origin")}
-                  onChange={(e) => handleQueryChange(e.target.value, "origin")}
-                  placeholder="From (Default: Your location)"
-                  className="w-full bg-transparent text-xs text-titanium-200 placeholder:text-titanium-500 focus:outline-none"
-                />
-              </div>
-
-              {/* Swap Origin / Destination Button */}
-              <button
-                onClick={onSwapLocations}
-                className="p-2 rounded-xl bg-obsidian-800 hover:bg-obsidian-700 border border-white/10 text-titanium-300 hover:text-white transition-all shadow-sm"
-                title="Swap origin and destination"
-              >
-                <ArrowUpDown className="w-3.5 h-3.5" />
-              </button>
+        {/* Destination Field ("To / Where to?" - always visible per A3 & B6) */}
+        <div className="flex items-center gap-2">
+          <div className="flex-1 flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-obsidian-900 border border-white/10 focus-within:border-white/30 transition-all min-h-[44px]">
+            <Search className="w-4 h-4 text-cyber-cyan shrink-0" />
+            <div className="min-w-0 flex-1">
+              <span className="text-[9px] uppercase font-mono tracking-wider text-titanium-400 block -mb-0.5">
+                To
+              </span>
+              <input
+                id="destination-search-input"
+                type="text"
+                value={destinationInput}
+                onFocus={() => setActiveField("destination")}
+                onChange={(e) => handleQueryChange(e.target.value, "destination")}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && onGetRoutes) {
+                    onGetRoutes();
+                  }
+                }}
+                placeholder="Where to? (e.g. Connaught Place, Janpath)"
+                aria-label="Destination address"
+                className="w-full bg-transparent text-sm text-white placeholder:text-titanium-400 focus:outline-none font-medium truncate"
+              />
             </div>
+            {isLoading && (
+              <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin shrink-0" />
+            )}
+            {destinationInput && (
+              <button
+                onClick={handleClearDestination}
+                className="min-h-[32px] min-w-[32px] p-1 rounded-full text-titanium-400 hover:text-white hover:bg-obsidian-800 flex items-center justify-center"
+                title="Clear destination"
+                aria-label="Clear destination"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
-        )}
+
+          {/* Prominent High-Contrast "Get routes" Button (B6: Min 44px tap target) */}
+          <button
+            onClick={() => {
+              if (onGetRoutes) onGetRoutes();
+            }}
+            className="min-h-[44px] px-3.5 py-2 rounded-xl bg-white text-obsidian-950 font-bold text-xs hover:brightness-110 active:scale-95 transition-all shadow-lg flex items-center gap-1.5 shrink-0"
+            title="Get routes"
+            aria-label="Get routes"
+          >
+            <span>Get routes</span>
+          </button>
+        </div>
       </div>
 
       {/* Autocomplete Suggestions / Recents Dropdown */}
       {(suggestions.length > 0 || (destinationInput.length >= 3 && noResults)) && (
-        <div className="absolute top-full left-0 right-0 mt-1.5 metallic-panel rounded-2xl border border-white/15 shadow-2xl overflow-hidden backdrop-blur-2xl z-50 animate-fade-in text-titanium-200">
+        <div className="absolute top-full left-0 right-0 mt-1.5 bg-obsidian-950/98 rounded-2xl border border-white/20 shadow-2xl overflow-hidden backdrop-blur-2xl z-50 animate-fade-in text-titanium-200">
           {noResults ? (
-            <div className="p-4 text-center text-xs text-titanium-400">
+            <div className="p-4 text-center text-xs text-titanium-300">
               No matching places found. Try another search or tap on the map.
             </div>
           ) : (
@@ -276,12 +290,12 @@ export default function LocationSearchBar({
                 <button
                   key={item.id}
                   onClick={() => handleSelectResult(item)}
-                  className="w-full px-3.5 py-2.5 text-left flex items-start gap-2.5 hover:bg-white/10 transition-colors"
+                  className="w-full px-3.5 py-2.5 text-left flex items-start gap-2.5 hover:bg-white/10 transition-colors min-h-[44px]"
                 >
                   <MapPin className="w-4 h-4 text-cyber-cyan shrink-0 mt-0.5" />
                   <div className="min-w-0 flex-1">
                     <div className="text-xs font-semibold text-white truncate">{item.name}</div>
-                    <div className="text-[11px] text-titanium-400 truncate">{item.fullAddress}</div>
+                    <div className="text-[11px] text-titanium-300 truncate">{item.fullAddress}</div>
                   </div>
                 </button>
               ))}
@@ -289,7 +303,7 @@ export default function LocationSearchBar({
           )}
 
           {/* Attribution Footer */}
-          <div className="px-3 py-1.5 bg-obsidian-950/80 border-t border-white/5 text-[10px] text-titanium-500 flex items-center justify-between">
+          <div className="px-3 py-1.5 bg-obsidian-950 border-t border-white/10 text-[10px] text-titanium-400 flex items-center justify-between font-mono">
             <span>{attribution}</span>
             <span>OSM bias: India</span>
           </div>
@@ -297,9 +311,9 @@ export default function LocationSearchBar({
       )}
 
       {/* Recent Searches Dropdown (when input is focused and empty) */}
-      {!destinationInput && isExpanded && recentSearches.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-1.5 metallic-panel rounded-2xl border border-white/15 shadow-2xl overflow-hidden backdrop-blur-2xl z-50 text-titanium-200">
-          <div className="px-3 py-2 text-[10px] font-mono uppercase tracking-wider text-titanium-400 border-b border-white/5 flex items-center gap-1.5">
+      {!destinationInput && activeField === "destination" && recentSearches.length > 0 && suggestions.length === 0 && (
+        <div className="absolute top-full left-0 right-0 mt-1.5 bg-obsidian-950/98 rounded-2xl border border-white/20 shadow-2xl overflow-hidden backdrop-blur-2xl z-50 text-titanium-200 animate-fade-in">
+          <div className="px-3 py-2 text-[10px] font-mono uppercase tracking-wider text-titanium-300 border-b border-white/5 flex items-center gap-1.5">
             <Clock className="w-3 h-3 text-cyber-cyan" />
             <span>Recent Searches</span>
           </div>
@@ -311,9 +325,9 @@ export default function LocationSearchBar({
                   setDestinationInput(rec.name);
                   onSelectDestination(rec);
                 }}
-                className="w-full px-3.5 py-2 text-left flex items-center gap-2.5 hover:bg-white/10 transition-colors"
+                className="w-full px-3.5 py-2 text-left flex items-center gap-2.5 hover:bg-white/10 transition-colors min-h-[44px]"
               >
-                <Clock className="w-3.5 h-3.5 text-titanium-500 shrink-0" />
+                <Clock className="w-3.5 h-3.5 text-titanium-400 shrink-0" />
                 <div className="min-w-0 flex-1">
                   <span className="text-xs text-titanium-200 truncate block">{rec.name}</span>
                 </div>

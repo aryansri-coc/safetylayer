@@ -44,7 +44,7 @@ const ISSUE_LABELS: Record<string, { label: string; desc: string; icon: React.Re
   },
 };
 
-export default function HazardDetailSheet({ hazard, onClose, onVerify }: HazardDetailSheetProps) {
+export default function HazardDetailSheet({ hazard, onClose, onVerify, onInspect3D }: HazardDetailSheetProps) {
   if (!hazard) return null;
 
   const info = ISSUE_LABELS[hazard.issue] || ISSUE_LABELS.other;
@@ -112,14 +112,17 @@ export default function HazardDetailSheet({ hazard, onClose, onVerify }: HazardD
           </div>
 
           <div className="p-2 rounded-lg bg-obsidian-900/40 border border-white/5 col-span-2">
-            <span className="text-titanium-500 block text-[10px] uppercase font-mono">Source & Privacy</span>
-            <span className="text-titanium-300 flex items-center gap-1.5 mt-0.5">
+            <span className="text-titanium-400 block text-[10px] uppercase font-mono">Source & Privacy</span>
+            <span className="text-titanium-200 flex items-center gap-1.5 mt-0.5">
               <Shield className="w-3.5 h-3.5 text-cyber-emerald shrink-0" />
               <span>
                 {hazard.presenceVerified
                   ? "Physically verified on-site by community commuter"
                   : "Community report (coordinates fuzzed for privacy)"}
               </span>
+            </span>
+            <span className="text-[10px] text-titanium-400 block mt-1">
+              Information, not a guarantee.
             </span>
           </div>
         </div>
@@ -131,7 +134,7 @@ export default function HazardDetailSheet({ hazard, onClose, onVerify }: HazardD
           {onInspect3D && (
             <button
               onClick={() => onInspect3D(hazard)}
-              className="px-3 py-1.5 text-xs text-cyber-cyan border border-cyber-cyan/30 rounded-xl hover:bg-cyber-cyan/10 transition-colors flex items-center gap-1.5 font-medium"
+              className="px-3 py-1.5 text-xs text-cyber-cyan border border-cyber-cyan/30 rounded-xl hover:bg-cyber-cyan/10 transition-colors flex items-center gap-1.5 font-medium min-h-[36px]"
               title="Inspect physical roadway anomaly in 3D wireframe mesh"
             >
               <span>3D Mesh</span>
@@ -141,14 +144,14 @@ export default function HazardDetailSheet({ hazard, onClose, onVerify }: HazardD
         <div className="flex items-center gap-2">
           <button
             onClick={onClose}
-            className="px-3.5 py-1.5 text-xs text-titanium-300 hover:text-white rounded-xl hover:bg-obsidian-800 transition-colors"
+            className="px-3.5 py-1.5 text-xs text-titanium-200 hover:text-white rounded-xl hover:bg-obsidian-800 transition-colors min-h-[36px]"
           >
             Dismiss
           </button>
           {onVerify && (
             <button
               onClick={() => onVerify(hazard)}
-              className="px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-white text-obsidian-950 hover:brightness-110 shadow-sm transition-all flex items-center gap-1"
+              className="px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-white text-obsidian-950 hover:brightness-110 shadow-sm transition-all flex items-center gap-1 min-h-[36px]"
             >
               <CheckCircle2 className="w-3 h-3" />
               <span>Confirm Status</span>

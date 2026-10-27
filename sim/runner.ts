@@ -49,7 +49,7 @@ function getGitCommitHash(): string {
 export async function runSimulation() {
   const { seeds: seedCount, configPath } = parseArgs();
   console.log("=================================================");
-  console.log(" SafeLayer Monte Carlo Simulation Harness        ");
+  console.log(" SafetyLayer Monte Carlo Simulation Harness      ");
   console.log("=================================================");
   console.log(` Config:    ${configPath}`);
   console.log(` Seeds:     ${seedCount}`);
@@ -273,7 +273,7 @@ export async function runSimulation() {
   console.log(` Wrote CSV:  ${csvPath}`);
 
   // Write Markdown Report with mandatory "Failure cases and limits"
-  const mdReport = `# SafeLayer Monte Carlo Simulation Empirical Report
+  const mdReport = `# SafetyLayer Monte Carlo Simulation Empirical Report
 **Generated At:** ${new Date().toISOString()}  
 **Git Commit:** \`${gitCommit}\`  
 **Monte Carlo Seeds:** ${seedCount} (Seeds ${startSeed} to ${startSeed + seedCount - 1})  
@@ -283,7 +283,7 @@ export async function runSimulation() {
 
 ## 1. Executive Summary & Headline Findings
 
-This simulation stress-tested SafeLayer's real production modules (\`TrustEngine\`, \`RiskModel\`, \`RoutingEngine\`, and \`ScoutScoringEngine\`) against an independent ground truth road graph across ${seedCount} seeded worlds.
+This simulation stress-tested SafetyLayer's real production modules (\`TrustEngine\`, \`RiskModel\`, \`RoutingEngine\`, and \`ScoutScoringEngine\`) against an independent ground truth road graph across ${seedCount} seeded worlds.
 
 | Metric | Mean | 95% Confidence Interval | Std Dev | Description |
 | :--- | :---: | :---: | :---: | :--- |
@@ -311,7 +311,7 @@ This simulation stress-tested SafeLayer's real production modules (\`TrustEngine
 
 ## 3. Mandatory Section: Failure Cases and Limits
 
-The simulation revealed concrete failure modes where SafeLayer's defenses degrade or struggle:
+The simulation revealed concrete failure modes where SafetyLayer's defenses degrade or struggle:
 
 1. **AI Fake Media with Authentic GPS Trails (${attackerRecallDist.ai_fake_media?.mean ?? 79.4}% catch rate):**
    - *Why it fails:* When an attacker physically walks a segment and generates convincing synthetic multimodal media (e.g., photo of a pothole placed on a smooth road), GPS presence check passes, transit velocity passes, and initial consistency check passes.

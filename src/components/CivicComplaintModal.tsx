@@ -30,7 +30,7 @@ SUBJECT: Urgent Public Safety Notice: Non-functional Street Lighting & Infrastru
 
 Respected Sir/Madam,
 
-This formal civic notice is auto-generated and backed by SafeLayer, a crowdsourced route-safety monitoring platform.
+This formal civic notice is auto-generated and backed by SafetyLayer, a crowdsourced route-safety monitoring platform.
 
 Between October 2026 and the present date, multiple independent verified commuters and registered Scout riders have logged persistent physical hazards along:
 Location: ${segmentName}
@@ -46,7 +46,7 @@ CORROBORATION SUMMARY:
 In accordance with municipal service level benchmarks, dark corridors on active service roads present severe vulnerability for women travelers, cyclists, and senior citizens. We request an immediate inspection and restoration of lighting fixtures along this corridor.
 
 Submitted on behalf of local commuters,
-SafeLayer Civic Action Working Group
+SafetyLayer Civic Action Working Group
 Reference ID: SL-NDMC-${Math.floor(100000 + Math.random() * 900000)}`;
 
   const handleCopy = () => {

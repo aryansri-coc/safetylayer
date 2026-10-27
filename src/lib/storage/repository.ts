@@ -22,7 +22,7 @@ class LocalStorageRepository implements IStorageRepository {
   private profiles: Map<string, TrustProfile> = new Map(
     SEED_TRUST_PROFILES.map((p) => [p.userId, { ...p }])
   );
-  private dataFilePath = path.join(process.cwd(), "data", "safelayer_state.json");
+  private dataFilePath = path.join(process.cwd(), "data", "safetylayer_state.json");
 
   constructor() {
     this.loadState();

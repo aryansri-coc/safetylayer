@@ -1,4 +1,4 @@
-#safelayer-injected-badge {
+#safetylayer-injected-badge {
   position: fixed;
   bottom: 24px;
   right: 24px;
@@ -14,6 +14,7 @@
   color: #fff;
   transition: transform 0.2s ease;
 }
-#safelayer-injected-badge:hover {
+#safetylayer-injected-badge:hover {
   transform: translateY(-2px);
 }
+

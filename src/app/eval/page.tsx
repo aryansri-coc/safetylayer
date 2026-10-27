@@ -86,7 +86,7 @@ export default function EvalPage() {
     },
     ablations: [
       {
-        name: "Full SafeLayer (Modules A-E)",
+        name: "Full SafetyLayer (Modules A-E)",
         safetyScore: 92.4,
         sybilLeakage: "2.1%",
         coldStartAUC: 0.88,
@@ -196,7 +196,7 @@ export default function EvalPage() {
           </div>
           <p className="text-titanium-300 leading-relaxed">
             The figures below represent <strong>synthetic benchmarks generated using the {systemStatus.gemma.provider.toUpperCase()} provider</strong> ({systemStatus.gemma.modelId}) over programmatic test suites. They demonstrate architecture correctness and schema validation, but <strong>must not be interpreted as field-measured real-world human accuracy</strong>.
-            SafeLayer maintains strict distinction between synthetic stress tests and verified field recordings.
+            SafetyLayer maintains strict distinction between synthetic stress tests and verified field recordings.
           </p>
         </div>
       </div>

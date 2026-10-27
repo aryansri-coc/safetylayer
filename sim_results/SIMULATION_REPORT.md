@@ -1,4 +1,4 @@
-# SafeLayer Monte Carlo Simulation Empirical Report
+# SafetyLayer Monte Carlo Simulation Empirical Report
 **Generated At:** 2026-10-26T19:01:34.359Z  
 **Git Commit:** `dev-uncommitted`  
 **Monte Carlo Seeds:** 30 (Seeds 42 to 71)  
@@ -8,7 +8,7 @@
 
 ## 1. Executive Summary & Headline Findings
 
-This simulation stress-tested SafeLayer's real production modules (`TrustEngine`, `RiskModel`, `RoutingEngine`, and `ScoutScoringEngine`) against an independent ground truth road graph across 30 seeded worlds.
+This simulation stress-tested SafetyLayer's real production modules (`TrustEngine`, `RiskModel`, `RoutingEngine`, and `ScoutScoringEngine`) against an independent ground truth road graph across 30 seeded worlds.
 
 | Metric | Mean | 95% Confidence Interval | Std Dev | Description |
 | :--- | :---: | :---: | :---: | :--- |
@@ -36,7 +36,7 @@ This simulation stress-tested SafeLayer's real production modules (`TrustEngine`
 
 ## 3. Mandatory Section: Failure Cases and Limits
 
-The simulation revealed concrete failure modes where SafeLayer's defenses degrade or struggle:
+The simulation revealed concrete failure modes where SafetyLayer's defenses degrade or struggle:
 
 1. **AI Fake Media with Authentic GPS Trails (98.0333% catch rate):**
    - *Why it fails:* When an attacker physically walks a segment and generates convincing synthetic multimodal media (e.g., photo of a pothole placed on a smooth road), GPS presence check passes, transit velocity passes, and initial consistency check passes.

@@ -1,12 +1,12 @@
-# SafeLayer: Limitations & Related Work
+# SafetyLayer: Limitations & Related Work
 
 ## 1. Related Work & Comparison with Safetipin
 
-The closest existing platform to SafeLayer is **Safetipin**, a pioneer in women's safety mapping that scores urban public spaces along 9 safety audit parameters (lighting, openness, visibility, people, security, walk path, transport, feeling, gender diversity).
+The closest existing platform to SafetyLayer is **Safetipin**, a pioneer in women's safety mapping that scores urban public spaces along 9 safety audit parameters (lighting, openness, visibility, people, security, walk path, transport, feeling, gender diversity).
 
-While Safetipin established the foundation for safety-informed urban mobility, SafeLayer introduces several fundamental structural and architectural advancements:
+While Safetipin established the foundation for safety-informed urban mobility, SafetyLayer introduces several fundamental structural and architectural advancements:
 
-| Dimension | Safetipin | SafeLayer (Our System) |
+| Dimension | Safetipin | SafetyLayer (Our System) |
 | :--- | :--- | :--- |
 | **Input Modality** | Structured questionnaire audits & vehicle-mounted phone cameras running proprietary models | **Free-form multimodal Hinglish/Hindi/English voice notes, 3-5 sampled keyframes, or 1-tap chips** processed via **Gemma 4** unified multimodal reasoning |
 | **Cold Start Handling** | Requires manual vehicle sweeps or human auditors before scoring is available | **Automated Street View Baseline Prior (Module B)** combined with OpenStreetMap/Places signals (24/7 commercial stores, hospitals, police stations) with strict honesty rules |
@@ -22,12 +22,12 @@ While Safetipin established the foundation for safety-informed urban mobility, S
 ### 2.1 The Street View Daylight Epistemic Gap (Honesty Rule)
 - **Constraint**: Google Street View panoramas are captured almost exclusively during daylight hours and may be between 6 and 24 months old.
 - **Epistemic Boundary**: A daytime panoramic image can confirm that streetlight poles and fixtures *physically exist*, but it cannot prove whether electricity is supplied or bulbs function at 22:00.
-- **System Mitigation**: SafeLayer treats Street View strictly as a **weak prior ($w_{prior} = 0.25$)** labeled explicitly in the UI as *"Lamps present, working status unknown"*. We enforce a rule that no road segment can be classified as "lit at night" without nocturnal user evidence. Fresh user reports immediately override this prior.
+- **System Mitigation**: SafetyLayer treats Street View strictly as a **weak prior ($w_{prior} = 0.25$)** labeled explicitly in the UI as *"Lamps present, working status unknown"*. We enforce a rule that no road segment can be classified as "lit at night" without nocturnal user evidence. Fresh user reports immediately override this prior.
 
 ### 2.2 Socio-Spatial Reporting Skew & Demographic Neutrality
 - **Risk of Stereotype Amplification**: Crowd-sourced platforms can inadvertently reproduce racial, caste, or class-based prejudice if users label poorer neighbourhoods as "unsafe" simply due to demographic composition.
 - **Architectural Safeguard**:
-  1. SafeLayer's taxonomy permits **ONLY concrete, physical infrastructure hazards**: `lighting`, `road_condition`, `footpath_missing`, `isolated_stretch`, `obstruction`.
+  1. SafetyLayer's taxonomy permits **ONLY concrete, physical infrastructure hazards**: `lighting`, `road_condition`, `footpath_missing`, `isolated_stretch`, `obstruction`.
   2. Gemma 4 system prompts enforce negative constraints that explicitly reject any characterization of people, caste, religion, or community identities.
   3. Algorithmic fairness audits compare baseline hazard scores with commercial footfall to ensure active street-vendor markets are not penalized.
 

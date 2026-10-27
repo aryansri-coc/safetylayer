@@ -146,7 +146,7 @@ async function runEvaluation(): Promise<EvalReport> {
   fs.writeFileSync(path.join(outDir, "eval_results.json"), JSON.stringify(report, null, 2));
 
   console.log("=========================================");
-  console.log("   SAFELAYER EVALUATION BENCHMARK REPORT ");
+  console.log("  SAFETYLAYER EVALUATION BENCHMARK REPORT ");
   console.log("=========================================");
   console.log(`Multimodal Extraction Accuracy: ${extractionMetrics.issueAccuracy}%`);
   console.log(`Severity Mean Absolute Error:   ${extractionMetrics.severityMAE}`);

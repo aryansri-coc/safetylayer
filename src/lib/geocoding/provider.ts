@@ -67,7 +67,7 @@ export class OsmPhotonGeocodingProvider implements GeocodingProvider {
 
       const response = await fetch(url.toString(), {
         headers: {
-          "User-Agent": "SafeLayer-Navigation/1.0 (osm-photon-search; contact: safelayer-demo@example.com)",
+          "User-Agent": "SafetyLayer-Navigation/1.0 (osm-photon-search; contact: safetylayer-demo@example.com)",
           Accept: "application/json",
         },
       });
@@ -120,7 +120,7 @@ export class OsmPhotonGeocodingProvider implements GeocodingProvider {
 
       const nomResponse = await fetch(nomUrl.toString(), {
         headers: {
-          "User-Agent": "SafeLayer-Navigation/1.0 (nominatim-fallback; contact: safelayer-demo@example.com)",
+          "User-Agent": "SafetyLayer-Navigation/1.0 (nominatim-fallback; contact: safetylayer-demo@example.com)",
           Accept: "application/json",
         },
       });

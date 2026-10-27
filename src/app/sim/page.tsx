@@ -146,7 +146,7 @@ export default function SimDashboardPage() {
             </span>
           </div>
           <p className="text-titanium-300 leading-relaxed font-mono">
-            This harness stress-tests SafeLayer's real production modules (<code className="text-white">trust/engine.ts</code>, <code className="text-white">risk/model.ts</code>, <code className="text-white">routing/engine.ts</code>, <code className="text-white">scout/scoring.ts</code>) across <strong>{metadata.seedsRun} seeded procedural road graphs</strong> against hidden ground truth.
+            This harness stress-tests SafetyLayer's real production modules (<code className="text-white">trust/engine.ts</code>, <code className="text-white">risk/model.ts</code>, <code className="text-white">routing/engine.ts</code>, <code className="text-white">scout/scoring.ts</code>) across <strong>{metadata.seedsRun} seeded procedural road graphs</strong> against hidden ground truth.
             The production modules are strictly isolated from ground-truth states. Numbers below reflect mean values and <strong>95% Student-t Confidence Intervals</strong>.
           </p>
         </div>

@@ -83,3 +83,63 @@ test("Daily credit cap limits reward accumulation to 100 points per cycle", () =
   assert.strictEqual(scout.vestedCorroboratedPoints, DAILY_CREDIT_CAP);
   assert.strictEqual(scout.dailyCreditsEarned, DAILY_CREDIT_CAP);
 });
+
+test("A5: evaluateScoutPrompt enforces proximity, stationary lock, diurnal window, and neutral wording", () => {
+  const { evaluateScoutPrompt } = require("../lib/scout/prompts");
+
+  const mockSegments = [
+    { id: "seg_cp", name: "Barakhamba Service Road" },
+  ];
+
+  const mockReports = [
+    {
+      id: "rep_night_light",
+      segmentId: "seg_cp",
+      issue: "lighting",
+      status: "published",
+      timeRelevance: "night",
+      coordinates: { lat: 28.6315, lng: 77.2235 },
+    },
+  ];
+
+  // 1. User moving at 15 km/h -> MUST REJECT (never prompt while moving)
+  const movingResult = evaluateScoutPrompt(mockReports, mockSegments, {
+    userCoords: { lat: 28.6315, lng: 77.2235 },
+    speedKmh: 15,
+    stationarySeconds: 0,
+    currentHour: 21,
+  });
+  assert.strictEqual(movingResult, null, "Must not prompt while user is moving");
+
+  // 2. User far away (> 150m) -> MUST REJECT
+  const farAwayResult = evaluateScoutPrompt(mockReports, mockSegments, {
+    userCoords: { lat: 28.6400, lng: 77.2300 }, // ~1 km away
+    speedKmh: 0,
+    stationarySeconds: 10,
+    currentHour: 21,
+  });
+  assert.strictEqual(farAwayResult, null, "Must not prompt outside 150m radius");
+
+  // 3. User close and stationary, but daytime (14:00) for night report -> MUST REJECT
+  const daytimeResult = evaluateScoutPrompt(mockReports, mockSegments, {
+    userCoords: { lat: 28.6315, lng: 77.2235 },
+    speedKmh: 0,
+    stationarySeconds: 10,
+    currentHour: 14, // 2 PM daylight
+  });
+  assert.strictEqual(daytimeResult, null, "Must not prompt for night streetlight in daylight");
+
+  // 4. User close (<150m), stationary >= 5s, night time (21:00) -> SUCCESS WITH NEUTRAL WORDING
+  const successResult = evaluateScoutPrompt(mockReports, mockSegments, {
+    userCoords: { lat: 28.6315, lng: 77.2235 },
+    speedKmh: 0,
+    stationarySeconds: 6,
+    currentHour: 21,
+  });
+  assert.ok(successResult);
+  assert.strictEqual(successResult.segmentName, "Barakhamba Service Road");
+  assert.ok(successResult.promptText.includes("reported after 8 PM"));
+  assert.ok(successResult.promptText.includes("Can you confirm this? Your answer helps keep the info accurate."));
+  assert.ok(!successResult.promptText.includes("pts")); // NO volume point incentives!
+});
+

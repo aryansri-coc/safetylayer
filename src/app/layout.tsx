@@ -2,9 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SafeLayer | Route-Safety Layer for Google Maps",
+  title: "SafetyLayer | Route-Safety Layer for Google Maps",
   description:
-    "A privacy-first route safety layer on top of Google Maps powered by Gemma 4 multimodal extraction, Street View baseline priors, and Bayesian trust verification.",
+    "SafetyLayer (formerly SafeLayer) - A privacy-first route safety layer on top of Google Maps powered by Gemma 4 multimodal extraction, Street View baseline priors, and Bayesian trust verification.",
   keywords: ["route safety", "Google Maps", "Gemma 4", "Hinglish road hazard", "Hacktoberfest"],
 };
 

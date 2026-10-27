@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Navbar from "@/components/Navbar";
-import SafeLayerMap from "@/components/SafeLayerMap";
+import SafetyLayerMap from "@/components/SafetyLayerMap";
 import RouteDrawer from "@/components/RouteDrawer";
 import ReportModal from "@/components/ReportModal";
 import ScoutPanel from "@/components/ScoutPanel";
@@ -14,6 +14,7 @@ import LocationPromptModal from "@/components/LocationPromptModal";
 import WelcomeCard from "@/components/WelcomeCard";
 import HazardDetailSheet from "@/components/HazardDetailSheet";
 import DeveloperInfoModal from "@/components/DeveloperInfoModal";
+import { evaluateScoutPrompt, ScoutPromptCandidate } from "@/lib/scout/prompts";
 import {
   GeolocationState,
   getGeolocationManager,
@@ -72,10 +73,9 @@ export default function HomePage() {
   const [isWelcomeOpen, setIsWelcomeOpen] = useState(false);
   const [isLoadingRoutes, setIsLoadingRoutes] = useState(false);
 
-  // Verification notice (Module C verification loop)
-  const [activeVerificationNotice, setActiveVerificationNotice] = useState<string | null>(
-    "Near Barakhamba Service Road: Verify dead streetlight report (Post-8 PM)? +35 Scout pts"
-  );
+  // Scout verification prompt (A5: proximity, stationary check, neutral wording)
+  const [activeScoutPrompt, setActiveScoutPrompt] = useState<ScoutPromptCandidate | null>(null);
+  const [isScoutPromptDismissedSession, setIsScoutPromptDismissedSession] = useState(false);
 
   // Subscribe to Geolocation Manager
   useEffect(() => {
@@ -101,7 +101,7 @@ export default function HomePage() {
 
     // Check first-run welcome card
     try {
-      const dismissed = localStorage.getItem("safelayer_welcome_dismissed");
+      const dismissed = localStorage.getItem("safetylayer_welcome_dismissed");
       if (!dismissed) {
         setIsWelcomeOpen(true);
       }
@@ -109,8 +109,48 @@ export default function HomePage() {
       // Fallback
     }
 
+    // Check session scout dismissal
+    try {
+      if (sessionStorage.getItem("safetylayer_scout_dismissed")) {
+        setIsScoutPromptDismissedSession(true);
+      }
+    } catch {
+      // Fallback
+    }
+
     return () => unsubscribe();
   }, []);
+
+  // Evaluate scout verification prompt when GPS or demo conditions change
+  useEffect(() => {
+    if (isWelcomeOpen || isScoutPromptDismissedSession) {
+      setActiveScoutPrompt(null);
+      return;
+    }
+
+    const prompt = evaluateScoutPrompt(reports, segments, {
+      userCoords: geoState.coords,
+      speedKmh: geoState.coords ? 0 : undefined,
+      stationarySeconds: geoState.coords ? 6 : 0,
+      isScoutModeOptedIn: isScoutOpen,
+      isDemoRunning: isDemoOpen,
+      isWelcomeOpen: isWelcomeOpen,
+      isDismissedThisSession: isScoutPromptDismissedSession,
+      currentHour: queryHour,
+    });
+
+    setActiveScoutPrompt(prompt);
+  }, [
+    reports,
+    segments,
+    geoState.coords,
+    isScoutOpen,
+    isDemoOpen,
+    isWelcomeOpen,
+    isScoutPromptDismissedSession,
+    queryHour,
+  ]);
+
 
   // Initial Data Fetch
   useEffect(() => {
@@ -254,13 +294,13 @@ export default function HomePage() {
 
   const handleMissionClaimed = (missionId: string) => {
     setScoutMissions((prev) => prev.filter((m) => m.id !== missionId));
-    setActiveVerificationNotice(null);
+    setActiveScoutPrompt(null);
   };
 
   const handleDismissWelcome = () => {
     setIsWelcomeOpen(false);
     try {
-      localStorage.setItem("safelayer_welcome_dismissed", "true");
+      localStorage.setItem("safetylayer_welcome_dismissed", "true");
     } catch {
       // Ignore
     }
@@ -282,6 +322,15 @@ export default function HomePage() {
       fullAddress: "Tolstoy Marg, CP, New Delhi",
       lat: 28.6248,
       lng: 77.2245,
+    });
+  };
+
+  const handleMapClick = (coords: { lat: number; lng: number }) => {
+    setDestination({
+      name: `Map point (${coords.lat.toFixed(3)}, ${coords.lng.toFixed(3)})`,
+      fullAddress: `Selected map coordinate (${coords.lat.toFixed(4)}, ${coords.lng.toFixed(4)})`,
+      lat: coords.lat,
+      lng: coords.lng,
     });
   };
 
@@ -310,14 +359,19 @@ export default function HomePage() {
               onSelectOrigin={(loc) => setOrigin(loc)}
               onSelectDestination={(loc) => setDestination(loc)}
               onSwapLocations={handleSwapLocations}
+              onGetRoutes={() => {
+                if (destination) {
+                  fetchRoutes(origin, destination, travelMode, queryHour);
+                }
+              }}
               mapCenter={{ lat: origin.lat, lng: origin.lng }}
               onClearDestination={() => setDestination(null)}
             />
           </div>
 
           {/* Low GPS Accuracy Alert Toast */}
-          {geoState.isPoorAccuracy && (
-            <div className="absolute top-20 left-4 right-4 md:left-6 md:right-auto md:w-96 z-20 metallic-panel p-2.5 rounded-xl border border-cyber-amber/30 text-xs flex items-center justify-between text-titanium-200 animate-fade-in shadow-xl backdrop-blur-md">
+          {geoState.isPoorAccuracy && !isWelcomeOpen && (
+            <div className="absolute top-36 left-4 right-4 md:left-6 md:right-auto md:w-96 z-20 bg-obsidian-950/95 p-2.5 rounded-xl border border-cyber-amber/40 text-xs flex items-center justify-between text-titanium-200 animate-fade-in shadow-xl backdrop-blur-md">
               <div className="flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4 text-cyber-amber shrink-0" />
                 <span>
@@ -327,23 +381,36 @@ export default function HomePage() {
             </div>
           )}
 
-          {/* Active Verification Notice (Module C verification loop) */}
-          {activeVerificationNotice && (
-            <div className="absolute top-32 left-4 right-4 md:left-6 md:right-auto md:w-96 z-20 metallic-panel p-3 rounded-xl border border-white/15 shadow-2xl animate-fade-in flex items-center justify-between gap-3 text-xs text-titanium-200">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-cyber-emerald animate-pulse shrink-0" />
-                <span className="text-[11px] leading-tight">{activeVerificationNotice}</span>
+          {/* Active Scout Verification Toast (A5: Neutral wording, stationary lock, no volume pts) */}
+          {activeScoutPrompt && !isWelcomeOpen && (
+            <div className="absolute top-36 left-4 right-4 md:left-6 md:right-auto md:w-[440px] z-20 bg-obsidian-950/95 p-3 rounded-xl border border-white/20 shadow-2xl animate-fade-in flex items-center justify-between gap-3 text-xs text-titanium-200 backdrop-blur-2xl">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="w-2.5 h-2.5 rounded-full bg-cyber-emerald animate-pulse shrink-0" />
+                <span className="text-[11px] leading-tight text-white font-medium truncate">
+                  {activeScoutPrompt.promptText}
+                </span>
               </div>
-              <div className="flex items-center gap-1.5 shrink-0">
+              <div className="flex items-center gap-2 shrink-0">
                 <button
-                  onClick={() => setIsScoutOpen(true)}
-                  className="px-2.5 py-1 rounded-lg bg-white text-obsidian-950 font-bold text-[10px] hover:brightness-110 shadow-sm"
+                  onClick={() => {
+                    setActiveScoutPrompt(null);
+                    setIsScoutOpen(true);
+                  }}
+                  className="min-h-[36px] px-3 py-1.5 rounded-xl bg-white text-obsidian-950 font-bold text-xs hover:brightness-110 shadow-sm"
                 >
-                  VERIFY
+                  Confirm
                 </button>
                 <button
-                  onClick={() => setActiveVerificationNotice(null)}
-                  className="text-titanium-400 hover:text-white px-1.5 py-1 text-xs"
+                  onClick={() => {
+                    setActiveScoutPrompt(null);
+                    setIsScoutPromptDismissedSession(true);
+                    try {
+                      sessionStorage.setItem("safetylayer_scout_dismissed", "true");
+                    } catch {}
+                  }}
+                  className="min-h-[36px] min-w-[36px] text-titanium-400 hover:text-white flex items-center justify-center p-1 text-sm rounded-lg hover:bg-white/10"
+                  title="Dismiss notice"
+                  aria-label="Dismiss notice"
                 >
                   ✕
                 </button>
@@ -352,12 +419,15 @@ export default function HomePage() {
           )}
 
           {/* Primary Map Libre Component */}
-          <SafeLayerMap
+          <SafetyLayerMap
             segments={segments}
             reports={reports}
+            routes={routes}
             selectedRoute={selectedRoute}
+            onSelectRoute={(r) => setSelectedRoute(r)}
             onSelectSegment={(s) => setSelectedSegment(s)}
             onSelectHazard={(h) => setInspectedHazard(h)}
+            onMapClick={handleMapClick}
             center={[origin.lat, origin.lng]}
             userLocation={geoState.coords}
             userAccuracy={geoState.accuracy}

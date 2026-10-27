@@ -49,14 +49,14 @@ export default function DemoWalkthrough({
     {
       step: 4,
       title: "4. SAFETY-AWARE ROUTE TRADEOFF",
-      desc: "Module E compares the direct route (14 min through dark unlit service road) vs the recommended commercial corridor (17 min via Janpath), showcasing a transparent '+3 min, 25% fewer issues' trade-off.",
+      desc: "Module E compares the direct service lane vs the recommended commercial corridor, showcasing an honest 'Fewer reported issues, +5 min' trade-off.",
       actionLabel: "COMPARE TRADEOFF",
       action: () => onToggleSaferRoute(),
     },
     {
       step: 5,
       title: "5. CIVIC ESCALATION & ZERO RETENTION",
-      desc: "SafeLayer aggregates verified reports into an auto-drafted formal municipal notice (NDMC) while strictly discarding raw video and fuzzing reporter coordinates.",
+      desc: "SafetyLayer aggregates verified reports into an auto-drafted formal municipal notice (NDMC) while strictly discarding raw video and fuzzing reporter coordinates.",
       actionLabel: "VIEW CIVIC DRAFT",
       action: () => onOpenCivicComplaint(),
     },

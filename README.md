@@ -1,4 +1,4 @@
-# SafeLayer
+# SafetyLayer (formerly SafeLayer)
 
 **Know which route has fewer reported issues before you step out.**
 
@@ -12,7 +12,7 @@ A crowd-sourced route-safety layer for maps, powered by **Gemma 4**. People repo
 ![Built with](https://img.shields.io/badge/built%20with-Gemma%204-4285F4)
 
 <!-- Add a hero screenshot or GIF here -->
-<!-- ![SafeLayer screenshot](docs/images/hero.png) -->
+<!-- ![SafetyLayer screenshot](docs/images/hero.png) -->
 
 **Demo video:** `<add link>` | **Live demo:** `<add link or "run locally, see Quick start">` | **Slides:** `<add link>`
 
@@ -21,7 +21,7 @@ A crowd-sourced route-safety layer for maps, powered by **Gemma 4**. People repo
 ## Table of contents
 
 1. [The problem](#the-problem)
-2. [What SafeLayer does](#what-safelayer-does)
+2. [What SafetyLayer does](#what-safetylayer-does)
 3. [Why Gemma 4](#why-gemma-4)
 4. [Features](#features)
 5. [How it works](#how-it-works)
@@ -47,14 +47,14 @@ Navigation apps pick the **fastest** route, not the **safest** one. They don't k
 
 Women, late-night commuters, students and delivery workers pay the price for this blind spot. The information exists. It just has no easy way to flow from the people who have it to the people who need it.
 
-## What SafeLayer does
+## What SafetyLayer does
 
 1. **Report:** anyone can flag a concrete issue in seconds: tap a reason chip, add a voice note in Hindi, English or Hinglish, or record a short video. Location and time are attached automatically.
 2. **Understand:** Gemma 4 reads the multimodal input and extracts a structured report: issue type, severity, time relevance and a confidence score.
 3. **Trust:** every report passes a trust layer (consistency checks, GPS presence checks, reporter reliability, collusion detection) before it affects anyone's route.
-4. **Relay:** when someone plans a trip, SafeLayer compares route options, shows what to watch for along each, and suggests an alternative with the trade-off made clear (for example, "+3 min, fewer reported issues").
+4. **Relay:** when someone plans a trip, SafetyLayer compares route options, shows what to watch for along each, and suggests an alternative with the trade-off made clear (for example, "+3 min, fewer reported issues").
 
-SafeLayer **never says a route is "safe"**. It says "fewer reported issues". It is information, not a guarantee.
+SafetyLayer **never says a route is "safe"**. It says "fewer reported issues". It is information, not a guarantee.
 
 ## Why Gemma 4
 
@@ -86,7 +86,7 @@ SafeLayer **never says a route is "safe"**. It says "fewer reported issues". It 
 - **Civic complaint draft:** aggregates verified reports into a draft complaint to the relevant municipal body.
 - **Active verification:** asks a nearby user a one-tap question ("Is this streetlight working?") where the system is least certain.
 - **Evaluation dashboard (`/eval`) and simulation (`/sim`):** see [Evaluation and simulation](#evaluation-and-simulation).
-- **Chrome extension wrapper (experimental):** injects SafeLayer overlays into Google Maps in the browser.
+- **Chrome extension wrapper (experimental):** injects SafetyLayer overlays into Google Maps in the browser.
 
 ## How it works
 
@@ -112,7 +112,7 @@ Reports are limited to **concrete, observable issues**: `lighting`, `road_condit
 
 ### Street View baseline, honestly
 
-Street View is daytime imagery and may be years old. It can show that lamp posts **exist**, not that they **work**. SafeLayer therefore:
+Street View is daytime imagery and may be years old. It can show that lamp posts **exist**, not that they **work**. SafetyLayer therefore:
 - labels this signal "lamps present, working status unknown",
 - treats it as a weak, low-confidence prior,
 - shows the imagery capture date,
@@ -241,7 +241,7 @@ Copy `.env.example` to `.env.local` and fill in what you have. Variable names be
 
 ## Trust, privacy and ethics
 
-SafeLayer is designed so that a safety tool does not become a surveillance or stigma tool.
+SafetyLayer is designed so that a safety tool does not become a surveillance or stigma tool.
 
 | Principle | What we do |
 | --- | --- |
@@ -308,9 +308,9 @@ A pre-recorded fallback video is in `<path or link>` in case live recording fail
 
 ## Related work
 
-The closest existing project is **Safetipin**, an Indian app where users audit places on factors like lighting, openness, visibility and public transport, and where scores feed safer-route suggestions. Its data has been used to inform city action. SafeLayer builds on the same idea and differs in these ways:
+The closest existing project is **Safetipin**, an Indian app where users audit places on factors like lighting, openness, visibility and public transport, and where scores feed safer-route suggestions. Its data has been used to inform city action. SafetyLayer builds on the same idea and differs in these ways:
 
-| Area | Safetipin (as we understand it) | SafeLayer |
+| Area | Safetipin (as we understand it) | SafetyLayer |
 | --- | --- | --- |
 | Input | Structured audits and its own photo collection | Free-form tap / voice / video in Hindi, English and Hinglish, structured by Gemma 4 |
 | Cold start | Needs audits | Street View + Places baseline gives a prior on day one |
@@ -333,7 +333,7 @@ We list these openly.
 - **Gemma limits.** Extraction can misread or hallucinate; low-confidence output goes to verification and is not published. Gemma is weaker at reading dense text in images, which does not matter here as we analyse scenes.
 - **Sampling bias.** Rider reports skew to main roads; pedestrians in lanes and footpaths are under-covered.
 - **AI-generated media.** Video can be faked. Defence relies on presence checks, corroboration and reliability scores, and is not perfect (see simulation failure cases).
-- **Not a safety guarantee.** SafeLayer reports observations. It cannot predict crime or guarantee anyone's safety.
+- **Not a safety guarantee.** SafetyLayer reports observations. It cannot predict crime or guarantee anyone's safety.
 - **Prototype security.** Authentication is minimal for the hackathon; do not deploy as-is.
 
 ## Verification status
@@ -380,7 +380,7 @@ Thanks to:
 - MapLibre, and the Photon / Nominatim / OSRM projects if used
 - Safetipin and the researchers and activists working on women's safety in public spaces, whose work inspired this project
 
-*SafeLayer provides information based on community reports and public data. It is not an emergency service and does not guarantee safety. In an emergency, contact your local emergency number.*
+*SafetyLayer provides information based on community reports and public data. It is not an emergency service and does not guarantee safety. In an emergency, contact your local emergency number.*
 
 ---
 
@@ -493,8 +493,8 @@ graph TD
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/safelayer.git
-cd safelayer
+git clone https://github.com/your-username/safetylayer.git
+cd safetylayer
 
 # Install dependencies
 npm install
@@ -504,7 +504,7 @@ cp .env.example .env.local
 ```
 
 ### Environment Configuration (`.env.local`)
-SafeLayer runs **out of the box with zero external credentials** using MapLibre GL, local SQLite/JSON storage, and the deterministic Mock Gemma 4 provider:
+SafetyLayer runs **out of the box with zero external credentials** using MapLibre GL, local SQLite/JSON storage, and the deterministic Mock Gemma 4 provider:
 
 ```env
 # Google Maps API Key (Optional: Falls back to MapLibre GL + OpenStreetMap if not provided)
@@ -576,7 +576,7 @@ Or view the live benchmark visualizer at [http://localhost:3000/eval](http://loc
 │   │   ├── eval/page.tsx                 # Empirical evaluation dashboard
 │   │   ├── globals.css
 │   │   ├── layout.tsx
-│   │   └── page.tsx                      # Main SafeLayer interactive map application
+│   │   └── page.tsx                      # Main SafetyLayer interactive map application
 │   ├── components/
 │   │   ├── CivicComplaintModal.tsx       # Auto-drafted NDMC/BBMP grievance generator
 │   │   ├── DemoWalkthrough.tsx           # 3-minute scripted demo walkthrough stepper
@@ -584,7 +584,7 @@ Or view the live benchmark visualizer at [http://localhost:3000/eval](http://loc
 │   │   ├── PrivacyModal.tsx              # Ethical AI & privacy guarantees
 │   │   ├── ReportModal.tsx               # Tiered multimodal hazard reporting
 │   │   ├── RouteDrawer.tsx               # Route comparison, mode selector & time slider
-│   │   ├── SafeLayerMap.tsx              # Dual-engine Google Maps / MapLibre component
+│   │   ├── SafetyLayerMap.tsx              # Dual-engine Google Maps / MapLibre component
 │   │   └── ScoutPanel.tsx                # Rider gamification with stationary safety sensor
 │   ├── lib/
 │   │   ├── baseline/streetview.ts        # Module B: Street View & Places cold start prior
@@ -600,7 +600,7 @@ Or view the live benchmark visualizer at [http://localhost:3000/eval](http://loc
 
 ## 🧪 Simulation Harness & Empirical Verification
 
-SafeLayer includes an independent, reproducible **Monte Carlo simulation harness** located in `/sim` that stress-tests production modules (`TrustEngine`, `RiskModel`, `RoutingEngine`, `ScoutScoringEngine`) across 30 seeds against a hidden ground truth.
+SafetyLayer includes an independent, reproducible **Monte Carlo simulation harness** located in `/sim` that stress-tests production modules (`TrustEngine`, `RiskModel`, `RoutingEngine`, `ScoutScoringEngine`) across 30 seeds against a hidden ground truth.
 
 ### Reproduction Commands:
 ```bash
@@ -626,7 +626,7 @@ npm test
 
 ## ⚠️ Known Limitations & Epistemic Boundaries
 
-In accordance with our strict honesty policy, SafeLayer documents where the system struggles:
+In accordance with our strict honesty policy, SafetyLayer documents where the system struggles:
 1. **AI Fake Media with Authentic GPS Trails (Catch rate 98%):** If an attacker physically walks a road segment while submitting AI-generated synthetic media, single-point checks pass. The false hazard is published until an independent commuter or scout refutes it.
 2. **Turned Sleeper Accounts (Catch rate 97.2%):** A user who builds a high Beta score ($\ge 0.85$) through genuine reports can temporarily poison a segment with 1-2 false reports before contradiction penalties downgrade their prior.
 3. **High Location Noise (> 70m):** In dense urban canyons where GPS drifts beyond 70 meters, false positive rejection reaches 28.5% for legitimate pedestrian sidewalk reports.

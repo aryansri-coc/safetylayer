@@ -39,7 +39,7 @@ export default function PrivacyModal({ isOpen, onClose }: PrivacyModalProps) {
               <span>Strict Physical Hazard Taxonomy Only</span>
             </div>
             <p className="text-slate-400 leading-relaxed pl-6">
-              SafeLayer strictly forbids labeling neighbourhoods, demographics, caste, religion, or communities. Gemma 4 prompts enforce negative constraints rejecting social profiling. Only observable physical infrastructure (lighting, potholes, footpaths, obstructions) is logged.
+              SafetyLayer strictly forbids labeling neighbourhoods, demographics, caste, religion, or communities. Gemma 4 prompts enforce negative constraints rejecting social profiling. Only observable physical infrastructure (lighting, potholes, footpaths, obstructions) is logged.
             </p>
           </div>
 
@@ -72,7 +72,7 @@ export default function PrivacyModal({ isOpen, onClose }: PrivacyModalProps) {
               <span>Algorithmic Fairness Audit</span>
             </div>
             <p className="text-slate-400 leading-relaxed pl-6">
-              SafeLayer compares baseline risk calculations against commercial vibrancy indicators to prevent disproportionate penalization of lower-income market corridors that have active night street vendors and strong pedestrian guardian presence despite lacking decorative lighting.
+              SafetyLayer compares baseline risk calculations against commercial vibrancy indicators to prevent disproportionate penalization of lower-income market corridors that have active night street vendors and strong pedestrian guardian presence despite lacking decorative lighting.
             </p>
           </div>
         </div>

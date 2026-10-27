@@ -73,7 +73,7 @@ export class OsrmRoutingProvider implements RoutingProvider {
     destination: LatLng,
     mode: TravelMode
   ): Promise<CandidateRoute[]> {
-    // Map SafeLayer travel mode to OSRM profile
+    // Map SafetyLayer travel mode to OSRM profile
     let profile = "driving";
     if (mode === "walking") {
       profile = "foot";
@@ -94,7 +94,7 @@ export class OsrmRoutingProvider implements RoutingProvider {
 
       const res = await fetch(url, {
         headers: {
-          "User-Agent": "SafeLayer-Navigation/1.0 (OSRM client; contact: safelayer-demo@example.com)",
+          "User-Agent": "SafetyLayer-Navigation/1.0 (OSRM client; contact: safetylayer-demo@example.com)",
         },
         signal: controller.signal,
       });
@@ -137,7 +137,7 @@ export class OsrmRoutingProvider implements RoutingProvider {
     return this.createFallbackRoute(origin, destination, mode);
   }
 
-  private createFallbackRoute(
+  createFallbackRoute(
     origin: LatLng,
     destination: LatLng,
     mode: TravelMode
@@ -149,8 +149,14 @@ export class OsrmRoutingProvider implements RoutingProvider {
       Math.sqrt(distLat * distLat + distLng * distLng) * 111 * 10
     ) / 10;
 
-    const speedKmh = mode === "walking" || mode === "night_commute" ? 4.5 : mode === "two_wheeler" ? 22 : 30;
-    const durationMinutes = Math.max(2, Math.round((distanceKm / speedKmh) * 60));
+    // Sensible average speeds: walk ~5 km/h, two-wheeler ~20-25 km/h, vehicle ~28-30 km/h
+    const speedKmh =
+      mode === "walking" || mode === "night_commute"
+        ? 5.0
+        : mode === "two_wheeler"
+        ? 22.0
+        : 28.0;
+    const durationMinutes = Math.max(1, Math.round((distanceKm / speedKmh) * 60));
 
     // Simple 3-point line
     const midLat = origin.lat + distLat * 0.5 + 0.0008;
@@ -159,7 +165,7 @@ export class OsrmRoutingProvider implements RoutingProvider {
     return [
       {
         id: "fallback_route_primary",
-        name: "Direct Corridor (Standard Path)",
+        name: "Direct Path (estimated)",
         durationMinutes,
         distanceKm,
         polyline: [

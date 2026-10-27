@@ -1,6 +1,6 @@
-# SafeLayer: Privacy & Security Claims Audit (PRIVACY_AUDIT.md)
+# SafetyLayer: Privacy & Security Claims Audit (PRIVACY_AUDIT.md)
 
-This document provides a line-by-line audit of every privacy, anonymity, and data-protection claim made across the SafeLayer application, documentation, and user interface.
+This document provides a line-by-line audit of every privacy, anonymity, and data-protection claim made across the SafetyLayer (formerly SafeLayer) application, documentation, and user interface.
 
 | Claim | Source Location | Code Implementation | Status | Verification Evidence |
 | :--- | :--- | :--- | :--- | :--- |

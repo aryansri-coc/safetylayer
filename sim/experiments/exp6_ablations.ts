@@ -26,7 +26,7 @@ export function runExp6Ablations(
   world: WorldGraph
 ): Exp6Result {
   const configs = [
-    { id: "full", name: "Full SafeLayer (Modules A-E)", desc: "Production architecture with all checks enabled" },
+    { id: "full", name: "Full SafetyLayer (Modules A-E)", desc: "Production architecture with all checks enabled" },
     { id: "no_trust", name: "Without Trust Layer (Module C)", desc: "Beta prior disabled; all reports treated with equal weight" },
     { id: "no_presence", name: "Without GPS Presence Check", desc: "No trail intersection or transit velocity validation" },
     { id: "no_collusion", name: "Without Collusion Detection", desc: "No multi-account temporal cluster detection" },
