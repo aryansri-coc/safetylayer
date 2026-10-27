@@ -7,7 +7,7 @@ A crowd-sourced route-safety layer for maps, powered by **Gemma 4**. People repo
 > Built for **Hacktoberfest** - **Gemma 4 track** - theme: **social implications of technology**.
 
 <!-- Replace with real badges once the repo is public -->
-![License](https://img.shields.io/badge/license-Apache--2.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-hackathon%20prototype-orange)
 ![Built with](https://img.shields.io/badge/built%20with-Gemma%204-4285F4)
 
@@ -372,7 +372,7 @@ We list these openly.
 
 ## License and acknowledgements
 
-Released under the **Apache-2.0** license (see [`LICENSE`](LICENSE)). Replace this if you chose a different license.
+Released under the **MIT** license (see [`LICENSE`](LICENSE)).
 
 Thanks to:
 - Google DeepMind for the Gemma open models
